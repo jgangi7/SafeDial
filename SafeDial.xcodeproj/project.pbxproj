@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3FF6D8E72F58ADC8002B95D6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF6D8E62F58ADC8002B95D6 /* WidgetKit.framework */; };
+		3FF6D8E92F58ADC8002B95D6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF6D8E82F58ADC8002B95D6 /* SwiftUI.framework */; };
+		3FF6D8F82F58ADCA002B95D6 /* MyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3FF6D8E42F58ADC8002B95D6 /* MyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		3FF6D8C42F58AD73002B95D6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,17 +27,91 @@
 			remoteGlobalIDString = 3FF6D8B52F58AD71002B95D6;
 			remoteInfo = SafeDial;
 		};
+		3FF6D8F62F58ADCA002B95D6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3FF6D8AE2F58AD71002B95D6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3FF6D8E32F58ADC8002B95D6;
+			remoteInfo = MyWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3FF6D8FD2F58ADCA002B95D6 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3FF6D8F82F58ADCA002B95D6 /* MyWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3FF6D8B62F58AD71002B95D6 /* SafeDial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeDial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF6D8C32F58AD73002B95D6 /* SafeDialTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeDialTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF6D8CD2F58AD73002B95D6 /* SafeDialUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeDialUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FF6D8E42F58ADC8002B95D6 /* MyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FF6D8E62F58ADC8002B95D6 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		3FF6D8E82F58ADC8002B95D6 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3F2A477A2F58B83A00F30EF9 /* Exceptions for "MyWidget" folder in "SafeDial" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppGroup.swift,
+				EmergencyService.swift,
+				LocationManager.swift,
+				WidgetUpdateManager.swift,
+			);
+			target = 3FF6D8B52F58AD71002B95D6 /* SafeDial */;
+		};
+		3F2A477B2F58B83A00F30EF9 /* Exceptions for "MyWidget" folder in "SafeDialTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppGroup.swift,
+				EmergencyService.swift,
+				LocationManager.swift,
+				WidgetUpdateManager.swift,
+			);
+			target = 3FF6D8C22F58AD73002B95D6 /* SafeDialTests */;
+		};
+		3F2A477C2F58B83A00F30EF9 /* Exceptions for "MyWidget" folder in "SafeDialUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppGroup.swift,
+				EmergencyService.swift,
+				LocationManager.swift,
+				WidgetUpdateManager.swift,
+			);
+			target = 3FF6D8CC2F58AD73002B95D6 /* SafeDialUITests */;
+		};
+		3F57BABD2F58D48A00C79A9D /* Exceptions for "SafeDial" folder in "SafeDial" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3FF6D8B52F58AD71002B95D6 /* SafeDial */;
+		};
+		3FF6D8F92F58ADCA002B95D6 /* Exceptions for "MyWidget" folder in "MyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3FF6D8E32F58ADC8002B95D6 /* MyWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3FF6D8B82F58AD71002B95D6 /* SafeDial */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3F57BABD2F58D48A00C79A9D /* Exceptions for "SafeDial" folder in "SafeDial" target */,
+			);
 			path = SafeDial;
 			sourceTree = "<group>";
 		};
@@ -43,6 +123,17 @@
 		3FF6D8D02F58AD73002B95D6 /* SafeDialUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SafeDialUITests;
+			sourceTree = "<group>";
+		};
+		3FF6D8EA2F58ADC8002B95D6 /* MyWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3F2A477A2F58B83A00F30EF9 /* Exceptions for "MyWidget" folder in "SafeDial" target */,
+				3F2A477B2F58B83A00F30EF9 /* Exceptions for "MyWidget" folder in "SafeDialTests" target */,
+				3F2A477C2F58B83A00F30EF9 /* Exceptions for "MyWidget" folder in "SafeDialUITests" target */,
+				3FF6D8F92F58ADCA002B95D6 /* Exceptions for "MyWidget" folder in "MyWidgetExtension" target */,
+			);
+			path = MyWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +160,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3FF6D8E12F58ADC8002B95D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FF6D8E92F58ADC8002B95D6 /* SwiftUI.framework in Frameworks */,
+				3FF6D8E72F58ADC8002B95D6 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -78,6 +178,8 @@
 				3FF6D8B82F58AD71002B95D6 /* SafeDial */,
 				3FF6D8C62F58AD73002B95D6 /* SafeDialTests */,
 				3FF6D8D02F58AD73002B95D6 /* SafeDialUITests */,
+				3FF6D8EA2F58ADC8002B95D6 /* MyWidget */,
+				3FF6D8E52F58ADC8002B95D6 /* Frameworks */,
 				3FF6D8B72F58AD71002B95D6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +190,18 @@
 				3FF6D8B62F58AD71002B95D6 /* SafeDial.app */,
 				3FF6D8C32F58AD73002B95D6 /* SafeDialTests.xctest */,
 				3FF6D8CD2F58AD73002B95D6 /* SafeDialUITests.xctest */,
+				3FF6D8E42F58ADC8002B95D6 /* MyWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		3FF6D8E52F58ADC8002B95D6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3FF6D8E62F58ADC8002B95D6 /* WidgetKit.framework */,
+				3FF6D8E82F58ADC8002B95D6 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,10 +214,12 @@
 				3FF6D8B22F58AD71002B95D6 /* Sources */,
 				3FF6D8B32F58AD71002B95D6 /* Frameworks */,
 				3FF6D8B42F58AD71002B95D6 /* Resources */,
+				3FF6D8FD2F58ADCA002B95D6 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3FF6D8F72F58ADCA002B95D6 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				3FF6D8B82F58AD71002B95D6 /* SafeDial */,
@@ -163,6 +277,28 @@
 			productReference = 3FF6D8CD2F58AD73002B95D6 /* SafeDialUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		3FF6D8E32F58ADC8002B95D6 /* MyWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FF6D8FA2F58ADCA002B95D6 /* Build configuration list for PBXNativeTarget "MyWidgetExtension" */;
+			buildPhases = (
+				3FF6D8E02F58ADC8002B95D6 /* Sources */,
+				3FF6D8E12F58ADC8002B95D6 /* Frameworks */,
+				3FF6D8E22F58ADC8002B95D6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3FF6D8EA2F58ADC8002B95D6 /* MyWidget */,
+			);
+			name = MyWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = MyWidgetExtension;
+			productReference = 3FF6D8E42F58ADC8002B95D6 /* MyWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +320,9 @@
 						CreatedOnToolsVersion = 26.1.1;
 						TestTargetID = 3FF6D8B52F58AD71002B95D6;
 					};
+					3FF6D8E32F58ADC8002B95D6 = {
+						CreatedOnToolsVersion = 26.1.1;
+					};
 				};
 			};
 			buildConfigurationList = 3FF6D8B12F58AD71002B95D6 /* Build configuration list for PBXProject "SafeDial" */;
@@ -203,6 +342,7 @@
 				3FF6D8B52F58AD71002B95D6 /* SafeDial */,
 				3FF6D8C22F58AD73002B95D6 /* SafeDialTests */,
 				3FF6D8CC2F58AD73002B95D6 /* SafeDialUITests */,
+				3FF6D8E32F58ADC8002B95D6 /* MyWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +363,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3FF6D8CB2F58AD73002B95D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3FF6D8E22F58ADC8002B95D6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +400,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3FF6D8E02F58ADC8002B95D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +419,11 @@
 			isa = PBXTargetDependency;
 			target = 3FF6D8B52F58AD71002B95D6 /* SafeDial */;
 			targetProxy = 3FF6D8CE2F58AD73002B95D6 /* PBXContainerItemProxy */;
+		};
+		3FF6D8F72F58ADCA002B95D6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3FF6D8E32F58ADC8002B95D6 /* MyWidgetExtension */;
+			targetProxy = 3FF6D8F62F58ADCA002B95D6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -393,15 +552,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SafeDial/SafeDial.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 34APX3J3ZP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SafeDial/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -424,15 +587,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SafeDial/SafeDial.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 34APX3J3ZP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SafeDial/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -530,6 +697,64 @@
 			};
 			name = Release;
 		};
+		3FF6D8FB2F58ADCA002B95D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = SafeDial.SafeDial.MyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3FF6D8FC2F58ADCA002B95D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = SafeDial.SafeDial.MyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -565,6 +790,15 @@
 			buildConfigurations = (
 				3FF6D8DE2F58AD73002B95D6 /* Debug */,
 				3FF6D8DF2F58AD73002B95D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3FF6D8FA2F58ADCA002B95D6 /* Build configuration list for PBXNativeTarget "MyWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FF6D8FB2F58ADCA002B95D6 /* Debug */,
+				3FF6D8FC2F58ADCA002B95D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
