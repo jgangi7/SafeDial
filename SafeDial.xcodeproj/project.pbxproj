@@ -51,6 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3F65A6CA2F58EBB20000CE3A /* MyWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3FF6D8B62F58AD71002B95D6 /* SafeDial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeDial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF6D8C32F58AD73002B95D6 /* SafeDialTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeDialTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF6D8CD2F58AD73002B95D6 /* SafeDialUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeDialUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,9 +75,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AppGroup.swift,
-				EmergencyService.swift,
-				LocationManager.swift,
-				WidgetUpdateManager.swift,
 			);
 			target = 3FF6D8C22F58AD73002B95D6 /* SafeDialTests */;
 		};
@@ -84,9 +82,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AppGroup.swift,
-				EmergencyService.swift,
-				LocationManager.swift,
-				WidgetUpdateManager.swift,
 			);
 			target = 3FF6D8CC2F58AD73002B95D6 /* SafeDialUITests */;
 		};
@@ -175,6 +170,7 @@
 		3FF6D8AD2F58AD71002B95D6 = {
 			isa = PBXGroup;
 			children = (
+				3F65A6CA2F58EBB20000CE3A /* MyWidgetExtension.entitlements */,
 				3FF6D8B82F58AD71002B95D6 /* SafeDial */,
 				3FF6D8C62F58AD73002B95D6 /* SafeDialTests */,
 				3FF6D8D02F58AD73002B95D6 /* SafeDialUITests */,
@@ -702,8 +698,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MyWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 34APX3J3ZP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MyWidget;
@@ -731,8 +729,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MyWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 34APX3J3ZP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MyWidget;

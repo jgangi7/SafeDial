@@ -100,26 +100,26 @@ struct EmergencyServiceProvider: TimelineProvider {
     }
     
     private func loadCachedService() -> EmergencyService {
-        print("📦 loadCachedService: Loading from App Group UserDefaults...")
+        // Explicitly using the string here to bypass any potential enum issues
+        let sharedDefaults = UserDefaults(suiteName: "group.com.jimmygangi.emergencyroute")
         
-        // Load from App Group UserDefaults - this is synced from the main app
-        if let data = UserDefaults.appGroup.data(forKey: "cachedEmergencyService"),
-           let service = try? JSONDecoder().decode(EmergencyService.self, from: data) {
-            print("✅ loadCachedService: Successfully loaded \(service.countryName) (\(service.countryCode))")
-            return service
+        if let data = sharedDefaults?.data(forKey: "cachedEmergencyService") {
+            do {
+                let service = try JSONDecoder().decode(EmergencyService.self, from: data)
+                print("✅ WIDGET: FOUND DATA for \(service.countryName)")
+                return service
+            } catch {
+                print("❌ WIDGET: Data found but decode failed: \(error)")
+            }
+        } else {
+            print("❌ WIDGET: Absolutely no data at the shared path.")
+            // Debug: Let's see if standard defaults has it (it shouldn't, but good for testing)
+            if UserDefaults.standard.data(forKey: "cachedEmergencyService") != nil {
+                print("⚠️ WIDGET: Data exists in STANDARD defaults, not SHARED. App Group is not linked.")
+            }
         }
         
-        print("🟡 loadCachedService: No cached service found, using default")
-        
-        // If no service is saved yet, return a default service with a clear message
-        return EmergencyService(
-            countryCode: "—",
-            countryName: "No Country Selected",
-            emergencyNumber: "112",
-            policeNumber: nil,
-            ambulanceNumber: nil,
-            fireNumber: nil
-        )
+        return EmergencyServiceDatabase.shared.defaultService
     }
 }
 

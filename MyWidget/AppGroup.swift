@@ -8,7 +8,7 @@
 import Foundation
 
 enum AppGroup {
-    static let identifier = "group.com.jgangi.emergencyroute"
+    static let identifier = "group.com.jimmygangi.emergencyroute"
     
     static var userDefaults: UserDefaults {
         print("📦 AppGroup: Attempting to load UserDefaults for '\(identifier)'")
