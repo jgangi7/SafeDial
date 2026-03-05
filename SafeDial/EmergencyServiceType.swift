@@ -29,15 +29,16 @@ enum EmergencyServiceType {
     
     /// Display title for each service type
     var title: String {
+        let manager = LocalizationManager.shared
         switch self {
         case .emergency:
-            return "Emergency"
+            return manager.localize(.emergency)
         case .police:
-            return "Police"
+            return manager.localize(.police)
         case .ambulance:
-            return "Ambulance"
+            return manager.localize(.ambulance)
         case .fire:
-            return "Fire"
+            return manager.localize(.fire)
         }
     }
     

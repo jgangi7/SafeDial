@@ -10,6 +10,7 @@ import SwiftUI
 struct ManualCountryPickerView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var selectedService: EmergencyService?
+    @StateObject private var localizationManager = LocalizationManager.shared
     
     @State private var searchText = ""
     
@@ -43,10 +44,10 @@ struct ManualCountryPickerView: View {
     var body: some View {
         NavigationStack {
             contentView
-                .navigationTitle("Select Country")
+                .navigationTitle(String(localized: .selectCountry))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(toolbarBackgroundColor, for: .navigationBar)
-                .searchable(text: $searchText, prompt: "Search country")
+                .searchable(text: $searchText, prompt: String(localized: .searchCountry))
                 .tint(.cerulean)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -62,10 +63,12 @@ struct ManualCountryPickerView: View {
     }
     
     private var cancelButton: some View {
-        Button("Cancel") {
+        Button {
             dismiss()
+        } label: {
+            LocalizedText(.cancel)
+                .foregroundStyle(Color.cerulean)
         }
-        .foregroundStyle(Color.cerulean)
     }
     
     private var contentView: some View {

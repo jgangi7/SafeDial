@@ -2,32 +2,35 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager.shared
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @State private var selectedService: EmergencyService?
     @State private var showingCountryPicker = false
+    @State private var showingLanguagePicker = false
     
     var body: some View {
-        ZStack {
-            // Soft pastel gradient background (8k quality aesthetic)
-            softPastelBackground
-            
-            ScrollView {
-                VStack(spacing: 24) {
-                    Spacer()
-                    if let service = selectedService {
-                        // Smart Location Card
-                        smartLocationCard(for: service)
-                        
-                        // Main emergency action cards
-                        emergencyActionCards(for: service)
-                    } else {
-                        emptyStateView
+        NavigationStack {
+            ZStack {
+                // Soft pastel gradient background (8k quality aesthetic)
+                softPastelBackground
+                Spacer();
+                ScrollView {
+                    VStack(spacing: 24) {
+                        if let service = selectedService {
+                            // Smart Location Card
+                            smartLocationCard(for: service)
+                            
+                            // Main emergency action cards
+                            emergencyActionCards(for: service)
+                        } else {
+                            emptyStateView
+                        }
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 16)
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 16)
             }
+            .ignoresSafeArea()
         }
-        .ignoresSafeArea()
         .onAppear {
             // Simply use what the manager already loaded from disk
             self.selectedService = locationManager.currentEmergencyService
@@ -42,6 +45,9 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showingCountryPicker) {
             ManualCountryPickerView(selectedService: $selectedService)
+        }
+        .sheet(isPresented: $showingLanguagePicker) {
+            LanguagePickerView()
         }
     }
     
@@ -63,17 +69,31 @@ struct ContentView: View {
     /// Smart Location Card with glassmorphism and flag
     private func smartLocationCard(for service: EmergencyService) -> some View {
         VStack(spacing: 16) {
-            // Title
+            // Title with globe button
             HStack {
                 Image(systemName: "location.fill")
                     .font(.headline)
                     .foregroundStyle(.blue)
                 
-                Text("Location")
+                LocalizedText(.location)
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primary)
                 
                 Spacer()
+                
+                Button {
+                    showingLanguagePicker = true
+                } label: {
+                    Image(systemName: "globe")
+                        .font(.headline)
+                        .foregroundStyle(.blue)
+                        .padding(8)
+                        .background(
+                            Circle()
+                                .fill(Color(.systemGray6))
+                        )
+                }
+                .accessibilityLabel(localizationManager.localize(.selectLanguage))
             }
             
             Divider()
@@ -101,7 +121,7 @@ struct ContentView: View {
                     HStack {
                         Image(systemName: "arrow.triangle.2.circlepath")
                             .font(.subheadline)
-                        Text("Change")
+                        LocalizedText(.change)
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
                     }
                     .foregroundStyle(.secondary)
@@ -167,11 +187,11 @@ struct ContentView: View {
                 .padding(.top, 60)
             
             VStack(spacing: 12) {
-                Text("No Country Selected")
+                LocalizedText(.noCountrySelected)
                     .font(.system(size: 26, weight: .bold, design: .rounded))
                     .foregroundStyle(.primary)
                 
-                Text("Select a country manually or enable location services to automatically detect your region.")
+                LocalizedText(.noCountryMessage)
                     .font(.system(size: 16, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -183,7 +203,7 @@ struct ContentView: View {
             } label: {
                 HStack {
                     Image(systemName: "globe")
-                    Text("Select Country")
+                    LocalizedText(.selectCountry)
                         .font(.system(size: 18, weight: .semibold, design: .rounded))
                 }
                 .foregroundStyle(.white)
@@ -213,7 +233,21 @@ struct GlassmorphismEmergencyCard: View {
     let type: EmergencyServiceType
     let service: EmergencyService
     
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @State private var isPressed = false
+    
+    private var localizedTitle: String {
+        switch type {
+        case .emergency:
+            return localizationManager.localize(.emergency)
+        case .police:
+            return localizationManager.localize(.police)
+        case .ambulance:
+            return localizationManager.localize(.ambulance)
+        case .fire:
+            return localizationManager.localize(.fire)
+        }
+    }
     
     var body: some View {
         Button {
@@ -228,7 +262,7 @@ struct GlassmorphismEmergencyCard: View {
                             .font(.title2)
                             .foregroundStyle(.white)
                         
-                        Text(type.title)
+                        Text(localizedTitle)
                             .font(.system(size: 22, weight: .semibold, design: .rounded))
                             .foregroundStyle(.white)
                     }
@@ -313,25 +347,27 @@ struct GlassmorphismEmergencyCard: View {
             return
         }
         
+        let manager = LocalizationManager.shared
+        
         // OWASP MASVS: CODE-1 - Sanitize phone number
         let sanitizedNumber = EmergencyService.sanitizePhoneNumber(number)
         
         // OWASP MASVS: PLATFORM-1 - Validate phone number format
         guard EmergencyService.isValidPhoneNumber(sanitizedNumber) else {
-            showSecurityAlert(message: "Invalid emergency number format")
+            showSecurityAlert(message: manager.localize(.invalidPhoneNumber))
             return
         }
         
         // OWASP MASVS: RESILIENCE-2 - Cross-validate with database
         guard validateNumberAgainstDatabase(number: sanitizedNumber) else {
-            showSecurityAlert(message: "Emergency number validation failed")
+            showSecurityAlert(message: manager.localize(.validationFailed))
             return
         }
         
         // OWASP MASVS: PLATFORM-1 - Validate URL construction
         guard let url = URL(string: "tel://\(sanitizedNumber)"),
               UIApplication.shared.canOpenURL(url) else {
-            showSecurityAlert(message: "Unable to make phone call")
+            showSecurityAlert(message: manager.localize(.unableToMakeCall))
             return
         }
         
