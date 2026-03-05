@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F65A6CC2F5937EE0000CE3A /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F65A6CB2F5937EE0000CE3A /* ColorScheme.swift */; };
+		3F65A6CD2F5938BE0000CE3A /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F65A6CB2F5937EE0000CE3A /* ColorScheme.swift */; };
 		3FF6D8E72F58ADC8002B95D6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF6D8E62F58ADC8002B95D6 /* WidgetKit.framework */; };
 		3FF6D8E92F58ADC8002B95D6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF6D8E82F58ADC8002B95D6 /* SwiftUI.framework */; };
 		3FF6D8F82F58ADCA002B95D6 /* MyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3FF6D8E42F58ADC8002B95D6 /* MyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -52,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		3F65A6CA2F58EBB20000CE3A /* MyWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyWidgetExtension.entitlements; sourceTree = "<group>"; };
+		3F65A6CB2F5937EE0000CE3A /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		3FF6D8B62F58AD71002B95D6 /* SafeDial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeDial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF6D8C32F58AD73002B95D6 /* SafeDialTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeDialTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF6D8CD2F58AD73002B95D6 /* SafeDialUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafeDialUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,6 +179,7 @@
 				3FF6D8D02F58AD73002B95D6 /* SafeDialUITests */,
 				3FF6D8EA2F58ADC8002B95D6 /* MyWidget */,
 				3FF6D8E52F58ADC8002B95D6 /* Frameworks */,
+				3F65A6CB2F5937EE0000CE3A /* ColorScheme.swift */,
 				3FF6D8B72F58AD71002B95D6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -379,6 +383,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F65A6CD2F5938BE0000CE3A /* ColorScheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +405,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F65A6CC2F5937EE0000CE3A /* ColorScheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

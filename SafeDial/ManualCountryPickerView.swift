@@ -14,7 +14,6 @@ struct ManualCountryPickerView: View {
     @State private var searchText = ""
     
     private var allServices: [EmergencyService] {
-        // Get all services from the database
         let database = EmergencyServiceDatabase.shared
         let countryCodes = [
             "US", "CA", "MX", "GB", "FR", "DE", "IT", "ES", "NL", "BE",
@@ -32,55 +31,121 @@ struct ManualCountryPickerView: View {
         if searchText.isEmpty {
             return allServices
         }
+        
         return allServices.filter { service in
-            service.countryName.localizedCaseInsensitiveContains(searchText) ||
-            service.countryCode.localizedCaseInsensitiveContains(searchText) ||
-            service.emergencyNumber.contains(searchText)
+            let matchesCountryName = service.countryName.localizedCaseInsensitiveContains(searchText)
+            let matchesCountryCode = service.countryCode.localizedCaseInsensitiveContains(searchText)
+            let matchesEmergencyNumber = service.emergencyNumber.contains(searchText)
+            return matchesCountryName || matchesCountryCode || matchesEmergencyNumber
         }
     }
     
     var body: some View {
         NavigationStack {
-            List(filteredServices, id: \.countryCode) { service in
-                Button {
-                    print("🌍 ManualCountryPickerView: User tapped \(service.countryName) (\(service.countryCode))")
-                    print("🌍 ManualCountryPickerView: Emergency number: \(service.emergencyNumber)")
-                    selectedService = service
-                    print("🌍 ManualCountryPickerView: Binding updated, dismissing...")
-                    dismiss()
-                } label: {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(service.countryName)
-                                .font(.headline)
-                            
-                            Text("Emergency: \(service.emergencyNumber)")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                        
-                        Spacer()
-                        
-                        if selectedService?.countryCode == service.countryCode {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(.blue)
-                        }
+            contentView
+                .navigationTitle("Select Country")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(toolbarBackgroundColor, for: .navigationBar)
+                .searchable(text: $searchText, prompt: "Search countries")
+                .tint(.cerulean)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        cancelButton
                     }
                 }
-                .foregroundStyle(.primary)
+        }
+        .tint(.cerulean)
+    }
+    
+    private var toolbarBackgroundColor: Color {
+        Color.honeydew.opacity(0.95)
+    }
+    
+    private var cancelButton: some View {
+        Button("Cancel") {
+            dismiss()
+        }
+        .foregroundStyle(Color.cerulean)
+    }
+    
+    private var contentView: some View {
+        ZStack {
+            // Background
+            Color.honeydew.ignoresSafeArea()
+            
+            serviceList
+        }
+    }
+    
+    private var serviceList: some View {
+        List(filteredServices, id: \.countryCode) { service in
+            serviceButton(for: service)
+                .listRowBackground(Color.white.opacity(0.6))
+        }
+        .scrollContentBackground(.hidden)
+    }
+    
+    private func serviceButton(for service: EmergencyService) -> some View {
+        Button {
+            print("🌍 ManualCountryPickerView: User tapped \(service.countryName)")
+            selectedService = service
+            dismiss()
+        } label: {
+            CountryRowView(
+                service: service,
+                isSelected: selectedService?.countryCode == service.countryCode
+            )
+        }
+    }
+}
+
+// MARK: - Helper Row View
+// Extracting this prevents the "compiler unable to type-check in reasonable time" error
+
+struct CountryRowView: View {
+    let service: EmergencyService
+    let isSelected: Bool
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Country code badge
+            Text(service.countryCode)
+                .font(.caption)
+                .fontWeight(.bold)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(Color.cerulean)
+                )
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(service.countryName)
+                    .font(.headline)
+                    .foregroundStyle(Color.oxfordNavy)
+                
+                HStack(spacing: 4) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.caption2)
+                        .foregroundStyle(Color.emergencyRed)
+                    
+                    Text(service.emergencyNumber)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(Color.oxfordNavy.opacity(0.7))
+                }
             }
-            .navigationTitle("Select Country")
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "Search countries")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        print("🌍 ManualCountryPickerView: User cancelled")
-                        dismiss()
-                    }
-                }
+            
+            Spacer()
+            
+            if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.title3)
+                    .foregroundStyle(Color.cerulean)
             }
         }
+        .padding(.vertical, 4)
     }
 }
 

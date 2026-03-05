@@ -152,28 +152,50 @@ struct SmallWidgetView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            Text(entry.service.countryCode)
-                .font(.title2)
-                .fontWeight(.bold)
+            // Country badge
+            HStack {
+                Text(entry.service.countryCode.uppercased())
+                    .font(.callout)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.blue)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(
+                        Capsule()
+                            .fill(.blue.opacity(0.15))
+                    )
+                Spacer()
+            }
             
             Text(entry.service.countryName)
                 .font(.caption)
+                .fontWeight(.medium)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
             
-            Divider()
+            Spacer()
             
-            VStack(spacing: 4) {
-                Text("Emergency")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+            // Emergency number
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 4) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.caption2)
+                        .foregroundStyle(.red)
+                    
+                    Text("Emergency")
+                        .font(.caption2)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.secondary)
+                }
+                
                 Text(entry.service.emergencyNumber)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.red)
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .foregroundStyle(.red.gradient)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .padding()
+        .padding(14)
         .widgetURL(URL(string: "safedial://widget-tapped?country=\(entry.service.countryCode)&number=\(entry.service.emergencyNumber)")!)
         .onAppear {
             print("🖼️ SmallWidgetView: Displayed")
@@ -189,39 +211,59 @@ struct MediumWidgetView: View {
     var entry: EmergencyEntry
     
     var body: some View {
-        HStack(spacing: 16) {
-            // Country Info
-            VStack(alignment: .leading, spacing: 4) {
-                Text(entry.service.countryCode)
-                    .font(.title)
-                    .fontWeight(.bold)
+        HStack(spacing: 0) {
+            // Left section - Country Info
+            VStack(alignment: .leading, spacing: 8) {
+                Text(entry.service.countryCode.uppercased())
+                    .font(.system(size: 44, weight: .bold))
+                    .foregroundStyle(.primary)
+                
                 Text(entry.service.countryName)
                     .font(.caption)
+                    .fontWeight(.medium)
                     .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                
+                Spacer()
+                
+                Image(systemName: "mappin.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(.blue.gradient)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .background(Color(.secondarySystemGroupedBackground))
             
-            Divider()
-            
-            // Emergency Numbers
+            // Right section - Emergency Numbers
             VStack(alignment: .leading, spacing: 8) {
-                NumberRow(label: "Emergency", number: entry.service.emergencyNumber, color: .red)
+                WidgetNumberRow(
+                    label: "Emer...",
+                    number: entry.service.emergencyNumber,
+                    color: .red,
+                    isPrimary: true
+                )
                 
-                if let police = entry.service.policeNumber {
-                    NumberRow(label: "Police", number: police, color: .blue)
+                if let ambulance = entry.service.ambulanceNumber, ambulance != entry.service.emergencyNumber {
+                    WidgetNumberRow(
+                        label: "Ambula...",
+                        number: ambulance,
+                        color: .green,
+                        isPrimary: false
+                    )
                 }
                 
-                if let ambulance = entry.service.ambulanceNumber {
-                    NumberRow(label: "Ambulance", number: ambulance, color: .green)
-                }
-                
-                if let fire = entry.service.fireNumber {
-                    NumberRow(label: "Fire", number: fire, color: .orange)
+                if let fire = entry.service.fireNumber, fire != entry.service.emergencyNumber {
+                    WidgetNumberRow(
+                        label: "Fire",
+                        number: fire,
+                        color: .orange,
+                        isPrimary: false
+                    )
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(16)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
-        .padding()
         .widgetURL(URL(string: "safedial://widget-tapped?country=\(entry.service.countryCode)&number=\(entry.service.emergencyNumber)")!)
         .onAppear {
             print("🖼️ MediumWidgetView: Displayed")
@@ -242,21 +284,29 @@ struct MediumWidgetView: View {
 
 // MARK: - Number Row Helper
 
-struct NumberRow: View {
+struct WidgetNumberRow: View {
     let label: String
     let number: String
     let color: Color
+    let isPrimary: Bool
     
     var body: some View {
         HStack(spacing: 8) {
-            Text(label)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-            Spacer()
-            Text(number)
-                .font(.caption)
-                .fontWeight(.semibold)
-                .foregroundStyle(color)
+            Circle()
+                .fill(color)
+                .frame(width: 8, height: 8)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label)
+                    .font(.caption2)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.secondary)
+                
+                Text(number)
+                    .font(isPrimary ? .title3 : .headline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(color.gradient)
+            }
         }
     }
 }
@@ -270,12 +320,12 @@ struct AccessoryCircularView: View {
         ZStack {
             AccessoryWidgetBackground()
             VStack(spacing: 2) {
-                Text(entry.service.countryCode)
+                Image(systemName: "exclamationmark.triangle.fill")
                     .font(.caption2)
-                    .fontWeight(.bold)
+                
                 Text(entry.service.emergencyNumber)
                     .font(.caption)
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
             }
         }
         .widgetURL(URL(string: "safedial://widget-tapped?country=\(entry.service.countryCode)&number=\(entry.service.emergencyNumber)")!)
@@ -295,19 +345,24 @@ struct AccessoryRectangularView: View {
     var body: some View {
         HStack(spacing: 8) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(entry.service.countryCode)
+                Text(entry.service.countryCode.uppercased())
                     .font(.headline)
                     .fontWeight(.bold)
+                
                 Text(entry.service.countryName)
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
             }
             
             Spacer()
             
-            Text(entry.service.emergencyNumber)
-                .font(.title3)
-                .fontWeight(.bold)
+            VStack(alignment: .trailing, spacing: 2) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.caption)
+                
+                Text(entry.service.emergencyNumber)
+                    .font(.title3)
+                    .fontWeight(.bold)
+            }
         }
         .widgetURL(URL(string: "safedial://widget-tapped?country=\(entry.service.countryCode)&number=\(entry.service.emergencyNumber)")!)
         .onAppear {
