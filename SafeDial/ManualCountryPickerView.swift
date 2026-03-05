@@ -108,17 +108,9 @@ struct CountryRowView: View {
     
     var body: some View {
         HStack(spacing: 12) {
-            // Country code badge
-            Text(service.countryCode)
-                .font(.caption)
-                .fontWeight(.bold)
-                .foregroundStyle(.white)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(Color.cerulean)
-                )
+            // Flag emoji
+            Text(service.flag)
+                .font(.system(size: 40))
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(service.countryName)

@@ -18,6 +18,26 @@ struct EmergencyService: Codable, Hashable, Sendable {
     var primaryNumber: String { 
         emergencyNumber
     }
+    
+    /// Returns the emoji flag for the country
+    var flag: String {
+        countryCode
+            .unicodeScalars
+            .map { 127397 + $0.value }
+            .compactMap(UnicodeScalar.init)
+            .map(String.init)
+            .joined()
+    }
+    
+    /// Returns a formatted display string with flag and country name
+    var displayName: String {
+        "\(flag) \(countryName)"
+    }
+    
+    /// Returns just the country name for smart location display (no country code)
+    var smartLocationDisplay: String {
+        countryName
+    }
 }
 
 final class EmergencyServiceDatabase: Sendable {
@@ -30,14 +50,14 @@ final class EmergencyServiceDatabase: Sendable {
         "MX": EmergencyService(countryCode: "MX", countryName: "Mexico", emergencyNumber: "911", policeNumber: "911", ambulanceNumber: "911", fireNumber: "911"),
         
         // Europe
-        "GB": EmergencyService(countryCode: "GB", countryName: "United Kingdom", emergencyNumber: "999", policeNumber: "999", ambulanceNumber: "999", fireNumber: "999"),
+        "GB": EmergencyService(countryCode: "GB", countryName: "United Kingdom", emergencyNumber: "112", policeNumber: "112", ambulanceNumber: "112", fireNumber: "999"),
         "FR": EmergencyService(countryCode: "FR", countryName: "France", emergencyNumber: "112", policeNumber: "17", ambulanceNumber: "15", fireNumber: "18"),
         "DE": EmergencyService(countryCode: "DE", countryName: "Germany", emergencyNumber: "112", policeNumber: "110", ambulanceNumber: "112", fireNumber: "112"),
         "IT": EmergencyService(countryCode: "IT", countryName: "Italy", emergencyNumber: "112", policeNumber: "112", ambulanceNumber: "118", fireNumber: "115"),
         "ES": EmergencyService(countryCode: "ES", countryName: "Spain", emergencyNumber: "112", policeNumber: "112", ambulanceNumber: "112", fireNumber: "112"),
         "NL": EmergencyService(countryCode: "NL", countryName: "Netherlands", emergencyNumber: "112", policeNumber: "112", ambulanceNumber: "112", fireNumber: "112"),
         "BE": EmergencyService(countryCode: "BE", countryName: "Belgium", emergencyNumber: "112", policeNumber: "112", ambulanceNumber: "112", fireNumber: "112"),
-        "CH": EmergencyService(countryCode: "CH", countryName: "Switzerland", emergencyNumber: "112", policeNumber: "117", ambulanceNumber: "144", fireNumber: "118"),
+        "CH": EmergencyService(countryCode: "CH", countryName: "Switzerland", emergencyNumber: "117", policeNumber: "117", ambulanceNumber: "144", fireNumber: "118"),
         "AT": EmergencyService(countryCode: "AT", countryName: "Austria", emergencyNumber: "112", policeNumber: "133", ambulanceNumber: "144", fireNumber: "122"),
         "SE": EmergencyService(countryCode: "SE", countryName: "Sweden", emergencyNumber: "112", policeNumber: "112", ambulanceNumber: "112", fireNumber: "112"),
         "NO": EmergencyService(countryCode: "NO", countryName: "Norway", emergencyNumber: "112", policeNumber: "112", ambulanceNumber: "113", fireNumber: "110"),
@@ -77,7 +97,7 @@ final class EmergencyServiceDatabase: Sendable {
         "PE": EmergencyService(countryCode: "PE", countryName: "Peru", emergencyNumber: "105", policeNumber: "105", ambulanceNumber: "116", fireNumber: "116"),
         
         // Africa
-        "ZA": EmergencyService(countryCode: "ZA", countryName: "South Africa", emergencyNumber: "112", policeNumber: "10111", ambulanceNumber: "10177", fireNumber: "10111"),
+        "ZA": EmergencyService(countryCode: "ZA", countryName: "South Africa", emergencyNumber: "112", policeNumber: "112", ambulanceNumber: "112", fireNumber: "112"),
         "EG": EmergencyService(countryCode: "EG", countryName: "Egypt", emergencyNumber: "122", policeNumber: "122", ambulanceNumber: "123", fireNumber: "180"),
         "KE": EmergencyService(countryCode: "KE", countryName: "Kenya", emergencyNumber: "999", policeNumber: "999", ambulanceNumber: "999", fireNumber: "999"),
         "NG": EmergencyService(countryCode: "NG", countryName: "Nigeria", emergencyNumber: "112", policeNumber: "112", ambulanceNumber: "112", fireNumber: "112"),

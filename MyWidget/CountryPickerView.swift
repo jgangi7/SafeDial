@@ -48,7 +48,11 @@ struct CountryPickerView: View {
                     WidgetUpdateManager.reloadEmergencyWidget()
                     dismiss()
                 } label: {
-                    HStack {
+                    HStack(spacing: 12) {
+                        // Flag emoji
+                        Text(service.flag)
+                            .font(.system(size: 40))
+                        
                         VStack(alignment: .leading, spacing: 4) {
                             Text(service.countryName)
                                 .font(.headline)
@@ -65,6 +69,7 @@ struct CountryPickerView: View {
                                 .foregroundStyle(.blue)
                         }
                     }
+                    .padding(.vertical, 4)
                 }
                 .foregroundStyle(.primary)
             }

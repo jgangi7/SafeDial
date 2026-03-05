@@ -152,27 +152,25 @@ struct SmallWidgetView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            // Country badge
+            // Flag and country name
             HStack {
-                Text(entry.service.countryCode.uppercased())
-                    .font(.callout)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.blue)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 4)
-                    .background(
-                        Capsule()
-                            .fill(.blue.opacity(0.15))
-                    )
+                Text(entry.service.flag)
+                    .font(.title)
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(entry.service.countryName)
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                    
+                    Text(entry.service.countryCode.uppercased())
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+                
                 Spacer()
             }
-            
-            Text(entry.service.countryName)
-                .font(.caption)
-                .fontWeight(.medium)
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
-                .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer()
             
@@ -212,23 +210,20 @@ struct MediumWidgetView: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            // Left section - Country Info
+            // Left section - Country Info with Flag
             VStack(alignment: .leading, spacing: 8) {
-                Text(entry.service.countryCode.uppercased())
-                    .font(.system(size: 44, weight: .bold))
-                    .foregroundStyle(.primary)
+                Text(entry.service.flag)
+                    .font(.system(size: 60))
                 
                 Text(entry.service.countryName)
                     .font(.caption)
-                    .fontWeight(.medium)
-                    .foregroundStyle(.secondary)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.primary)
                     .lineLimit(2)
                 
-                Spacer()
-                
-                Image(systemName: "mappin.circle.fill")
-                    .font(.title2)
-                    .foregroundStyle(.blue.gradient)
+                Text(entry.service.countryCode.uppercased())
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
             }
             .padding(16)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
