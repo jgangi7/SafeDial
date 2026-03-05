@@ -21,16 +21,7 @@ struct ContentView: View {
                         }
                         
                         Button("Force Sync") {
-                            let testService = EmergencyService(
-                                countryCode: "BR",
-                                countryName: "Brazil",
-                                emergencyNumber: "190",
-                                policeNumber: "190",
-                                ambulanceNumber: "190",
-                                fireNumber: "190"
-                                
-                            )
-                            LocationManager.shared.cacheEmergencyService(testService)
+                            LocationManager.shared.cacheEmergencyService(service)
                         }
                         
                         // Header Card
