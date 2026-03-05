@@ -38,6 +38,52 @@ struct EmergencyService: Codable, Hashable, Sendable {
     var smartLocationDisplay: String {
         countryName
     }
+    
+    // MARK: - OWASP Validation Methods
+    
+    /// Validates that a phone number contains only allowed characters
+    /// OWASP MASVS: PLATFORM-1, CODE-1
+    static func isValidPhoneNumber(_ number: String) -> Bool {
+        // Emergency numbers should only contain digits, and optionally + for international prefix
+        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789+")
+        let numberCharacterSet = CharacterSet(charactersIn: number)
+        
+        // Check if all characters are in the allowed set
+        guard allowedCharacterSet.isSuperset(of: numberCharacterSet) else {
+            return false
+        }
+        
+        // Emergency numbers should be between 3-6 digits (global standard)
+        // Some countries use 3 digits (911, 112), others use up to 6
+        let digitCount = number.filter { $0.isNumber }.count
+        guard digitCount >= 2 && digitCount <= 6 else {
+            return false
+        }
+        
+        return true
+    }
+    
+    /// Sanitizes a phone number by removing any non-digit characters except +
+    /// OWASP MASVS: CODE-1
+    static func sanitizePhoneNumber(_ number: String) -> String {
+        let allowedCharacters = CharacterSet(charactersIn: "0123456789+")
+        return number.unicodeScalars
+            .filter { allowedCharacters.contains($0) }
+            .map { String($0) }
+            .joined()
+    }
+    
+    /// Validates that a country code is properly formatted (2 uppercase letters)
+    /// OWASP MASVS: PLATFORM-1, CODE-1
+    static func isValidCountryCode(_ code: String) -> Bool {
+        // ISO 3166-1 alpha-2 country codes are always 2 uppercase letters
+        let pattern = "^[A-Z]{2}$"
+        let regex = try? NSRegularExpression(pattern: pattern)
+        let range = NSRange(location: 0, length: code.utf16.count)
+        let match = regex?.firstMatch(in: code, range: range)
+        
+        return match != nil
+    }
 }
 
 final class EmergencyServiceDatabase: Sendable {

@@ -35,91 +35,102 @@ struct EmergencyServiceProvider: TimelineProvider {
     typealias Entry = EmergencyEntry
 
     func placeholder(in context: Context) -> EmergencyEntry {
-        print("📱 EmergencyServiceProvider: placeholder requested")
         // Use the actual cached service for placeholder as well
         let service = loadCachedService()
-        print("📱 EmergencyServiceProvider: placeholder using service for \(service.countryName)")
-        print("   🌍 Country: \(service.countryName) (\(service.countryCode))")
-        print("   🚨 Emergency Number: \(service.emergencyNumber)")
-        if let police = service.policeNumber {
-            print("   👮 Police: \(police)")
-        }
-        if let ambulance = service.ambulanceNumber {
-            print("   🚑 Ambulance: \(ambulance)")
-        }
-        if let fire = service.fireNumber {
-            print("   🚒 Fire: \(fire)")
-        }
         return EmergencyEntry(date: Date(), service: service)
     }
     
     func getSnapshot(in context: Context, completion: @escaping (EmergencyEntry) -> Void) {
-        print("📱 EmergencyServiceProvider: snapshot requested (isPreview: \(context.isPreview))")
         let service = loadCachedService()
         let entry = EmergencyEntry(date: Date(), service: service)
-        print("📱 EmergencyServiceProvider: snapshot using service for \(service.countryName)")
-        print("   🌍 Country: \(service.countryName) (\(service.countryCode))")
-        print("   🚨 Emergency Number: \(service.emergencyNumber)")
-        if let police = service.policeNumber {
-            print("   👮 Police: \(police)")
-        }
-        if let ambulance = service.ambulanceNumber {
-            print("   🚑 Ambulance: \(ambulance)")
-        }
-        if let fire = service.fireNumber {
-            print("   🚒 Fire: \(fire)")
-        }
         completion(entry)
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<EmergencyEntry>) -> Void) {
-        print("📱 EmergencyServiceProvider: timeline requested")
         let currentDate = Date()
         let service = loadCachedService()
         let entry = EmergencyEntry(date: currentDate, service: service)
-        
-        print("📱 EmergencyServiceProvider: timeline using service for \(service.countryName)")
-        print("   🌍 Country: \(service.countryName) (\(service.countryCode))")
-        print("   🚨 Emergency Number: \(service.emergencyNumber)")
-        if let police = service.policeNumber {
-            print("   👮 Police: \(police)")
-        }
-        if let ambulance = service.ambulanceNumber {
-            print("   🚑 Ambulance: \(ambulance)")
-        }
-        if let fire = service.fireNumber {
-            print("   🚒 Fire: \(fire)")
-        }
         
         // Reload more frequently to pick up changes from the app
         let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: currentDate)!
         let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
         
-        print("📱 EmergencyServiceProvider: timeline created, next update at \(nextUpdate)")
         completion(timeline)
     }
     
+    /// Loads cached service with HMAC integrity verification
+    /// OWASP MASVS: STORAGE-1, RESILIENCE-1
     private func loadCachedService() -> EmergencyService {
-        // Explicitly using the string here to bypass any potential enum issues
-        let sharedDefaults = UserDefaults(suiteName: "group.com.jimmygangi.emergencyroute")
-        
-        if let data = sharedDefaults?.data(forKey: "cachedEmergencyService") {
-            do {
-                let service = try JSONDecoder().decode(EmergencyService.self, from: data)
-                print("✅ WIDGET: FOUND DATA for \(service.countryName)")
+        do {
+            // Use secure storage with HMAC verification
+            if let service = try AppGroup.secureGet(EmergencyService.self, forKey: "cachedEmergencyService") {
+                // Validate loaded data
+                guard validateLoadedService(service) else {
+                    return EmergencyServiceDatabase.shared.defaultService
+                }
+                
                 return service
-            } catch {
-                print("❌ WIDGET: Data found but decode failed: \(error)")
             }
-        } else {
-            print("❌ WIDGET: Absolutely no data at the shared path.")
-            // Debug: Let's see if standard defaults has it (it shouldn't, but good for testing)
-            if UserDefaults.standard.data(forKey: "cachedEmergencyService") != nil {
-                print("⚠️ WIDGET: Data exists in STANDARD defaults, not SHARED. App Group is not linked.")
+        } catch SecurityError.integrityCheckFailed {
+            // Clean up compromised data
+            AppGroup.secureRemove(forKey: "cachedEmergencyService")
+        } catch {
+            // Fallback: Try loading legacy data directly (for migration period)
+            if let legacyService = loadLegacyService() {
+                return legacyService
             }
         }
         
         return EmergencyServiceDatabase.shared.defaultService
+    }
+    
+    /// Loads legacy service data (without HMAC) for backward compatibility
+    private func loadLegacyService() -> EmergencyService? {
+        guard let data = AppGroup.userDefaults.data(forKey: "cachedEmergencyService") else {
+            return nil
+        }
+        
+        do {
+            let service = try JSONDecoder().decode(EmergencyService.self, from: data)
+            
+            // Validate the legacy data
+            guard validateLoadedService(service) else {
+                return nil
+            }
+            
+            return service
+        } catch {
+            return nil
+        }
+    }
+    
+    /// Validates loaded emergency service data
+    /// OWASP MASVS: PLATFORM-1, RESILIENCE-2
+    private func validateLoadedService(_ service: EmergencyService) -> Bool {
+        // Validate country code format
+        guard EmergencyService.isValidCountryCode(service.countryCode) else {
+            return false
+        }
+        
+        // Validate emergency number
+        guard EmergencyService.isValidPhoneNumber(service.emergencyNumber) else {
+            return false
+        }
+        
+        // Validate optional numbers if present
+        if let police = service.policeNumber, !EmergencyService.isValidPhoneNumber(police) {
+            return false
+        }
+        
+        if let ambulance = service.ambulanceNumber, !EmergencyService.isValidPhoneNumber(ambulance) {
+            return false
+        }
+        
+        if let fire = service.fireNumber, !EmergencyService.isValidPhoneNumber(fire) {
+            return false
+        }
+        
+        return true
     }
 }
 
@@ -194,12 +205,7 @@ struct SmallWidgetView: View {
             }
         }
         .padding(14)
-        .widgetURL(URL(string: "safedial://widget-tapped?country=\(entry.service.countryCode)&number=\(entry.service.emergencyNumber)")!)
-        .onAppear {
-            print("🖼️ SmallWidgetView: Displayed")
-            print("   🌍 Showing: \(entry.service.countryName) (\(entry.service.countryCode))")
-            print("   🚨 Emergency: \(entry.service.emergencyNumber)")
-        }
+        .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
     }
 }
 
@@ -259,21 +265,7 @@ struct MediumWidgetView: View {
             .padding(16)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
-        .widgetURL(URL(string: "safedial://widget-tapped?country=\(entry.service.countryCode)&number=\(entry.service.emergencyNumber)")!)
-        .onAppear {
-            print("🖼️ MediumWidgetView: Displayed")
-            print("   🌍 Showing: \(entry.service.countryName) (\(entry.service.countryCode))")
-            print("   🚨 Emergency: \(entry.service.emergencyNumber)")
-            if let police = entry.service.policeNumber {
-                print("   👮 Police: \(police)")
-            }
-            if let ambulance = entry.service.ambulanceNumber {
-                print("   🚑 Ambulance: \(ambulance)")
-            }
-            if let fire = entry.service.fireNumber {
-                print("   🚒 Fire: \(fire)")
-            }
-        }
+        .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
     }
 }
 
@@ -323,12 +315,7 @@ struct AccessoryCircularView: View {
                     .fontWeight(.bold)
             }
         }
-        .widgetURL(URL(string: "safedial://widget-tapped?country=\(entry.service.countryCode)&number=\(entry.service.emergencyNumber)")!)
-        .onAppear {
-            print("🖼️ AccessoryCircularView: Displayed")
-            print("   🌍 Showing: \(entry.service.countryName) (\(entry.service.countryCode))")
-            print("   🚨 Emergency: \(entry.service.emergencyNumber)")
-        }
+        .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
     }
 }
 
@@ -359,12 +346,43 @@ struct AccessoryRectangularView: View {
                     .fontWeight(.bold)
             }
         }
-        .widgetURL(URL(string: "safedial://widget-tapped?country=\(entry.service.countryCode)&number=\(entry.service.emergencyNumber)")!)
-        .onAppear {
-            print("🖼️ AccessoryRectangularView: Displayed")
-            print("   🌍 Showing: \(entry.service.countryName) (\(entry.service.countryCode))")
-            print("   🚨 Emergency: \(entry.service.emergencyNumber)")
+        .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
+    }
+}
+
+// MARK: - Widget URL Builder with OWASP Validation
+
+/// Builds validated widget URLs with security checks
+/// OWASP MASVS: PLATFORM-2, RESILIENCE-2
+enum WidgetURLBuilder {
+    static func buildURL(for service: EmergencyService) -> URL {
+        // Validate service data before building URL
+        guard EmergencyService.isValidCountryCode(service.countryCode) else {
+            return fallbackURL()
         }
+        
+        guard EmergencyService.isValidPhoneNumber(service.emergencyNumber) else {
+            return fallbackURL()
+        }
+        
+        // Sanitize values for URL safety
+        let sanitizedCountry = service.countryCode.uppercased()
+        let sanitizedNumber = EmergencyService.sanitizePhoneNumber(service.emergencyNumber)
+        
+        // Build URL with validated components
+        let urlString = "safedial://widget-tapped?country=\(sanitizedCountry)&number=\(sanitizedNumber)"
+        
+        guard let url = URL(string: urlString) else {
+            return fallbackURL()
+        }
+        
+        return url
+    }
+    
+    /// Fallback URL if validation fails
+    private static func fallbackURL() -> URL {
+        // Return a safe no-op URL that uses EU standard 112
+        return URL(string: "safedial://widget-tapped?country=EU&number=112")!
     }
 }
 

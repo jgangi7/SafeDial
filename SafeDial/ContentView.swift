@@ -306,15 +306,63 @@ struct GlassmorphismEmergencyCard: View {
         }
     }
     
-    /// Makes a phone call to the emergency number
+    /// Makes a phone call to the emergency number with OWASP validation
+    /// OWASP MASVS: PLATFORM-1, CODE-1, RESILIENCE-2
     private func makeCall() {
-        guard let number = type.number(from: service),
-              let url = URL(string: "tel://\(number)") else { return }
+        guard let number = type.number(from: service) else {
+            return
+        }
+        
+        // OWASP MASVS: CODE-1 - Sanitize phone number
+        let sanitizedNumber = EmergencyService.sanitizePhoneNumber(number)
+        
+        // OWASP MASVS: PLATFORM-1 - Validate phone number format
+        guard EmergencyService.isValidPhoneNumber(sanitizedNumber) else {
+            showSecurityAlert(message: "Invalid emergency number format")
+            return
+        }
+        
+        // OWASP MASVS: RESILIENCE-2 - Cross-validate with database
+        guard validateNumberAgainstDatabase(number: sanitizedNumber) else {
+            showSecurityAlert(message: "Emergency number validation failed")
+            return
+        }
+        
+        // OWASP MASVS: PLATFORM-1 - Validate URL construction
+        guard let url = URL(string: "tel://\(sanitizedNumber)"),
+              UIApplication.shared.canOpenURL(url) else {
+            showSecurityAlert(message: "Unable to make phone call")
+            return
+        }
+        
+        // All security checks passed
         
         // Haptic feedback before call
         let notification = UINotificationFeedbackGenerator()
         notification.notificationOccurred(.warning)
         
         UIApplication.shared.open(url)
+    }
+    
+    /// Cross-validates phone number against emergency service database
+    /// OWASP MASVS: RESILIENCE-2
+    private func validateNumberAgainstDatabase(number: String) -> Bool {
+        let validNumbers = [
+            service.emergencyNumber,
+            service.policeNumber,
+            service.ambulanceNumber,
+            service.fireNumber
+        ].compactMap { $0 }
+        
+        return validNumbers.contains(number)
+    }
+    
+    /// Shows security alert to user
+    private func showSecurityAlert(message: String) {
+        // Haptic feedback for error
+        let notification = UINotificationFeedbackGenerator()
+        notification.notificationOccurred(.error)
+        
+        // In a production app, you might show a SwiftUI alert here
     }
 }

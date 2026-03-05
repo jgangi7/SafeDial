@@ -87,7 +87,6 @@ struct ManualCountryPickerView: View {
     
     private func serviceButton(for service: EmergencyService) -> some View {
         Button {
-            print("🌍 ManualCountryPickerView: User tapped \(service.countryName)")
             selectedService = service
             dismiss()
         } label: {

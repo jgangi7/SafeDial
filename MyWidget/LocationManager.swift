@@ -31,7 +31,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     /// The ONLY way to trigger GPS now is by calling this manually
     func updateLocation() {
-        print("📍 LocationManager: Manual update requested")
         isLoading = true
         locationManager.requestLocation()
     }
@@ -46,7 +45,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     nonisolated func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("🔴 LocationManager error: \(error.localizedDescription)")
         Task { @MainActor in
             isLoading = false
         }
@@ -70,7 +68,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 cacheEmergencyService(service)
             }
         } catch {
-            print("🔴 Geocoding failed")
         }
         isLoading = false
     }
@@ -82,36 +79,58 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         return request
     }
     
-    // MARK: - Disk I/O (Consistency Layer)
+    // MARK: - Disk I/O (Consistency Layer) with OWASP Security
     
     nonisolated func getCachedEmergencyService() -> EmergencyService {
-        if let data = UserDefaults.appGroup.data(forKey: "cachedEmergencyService"),
-           let service = try? JSONDecoder().decode(EmergencyService.self, from: data) {
-            return service
+        do {
+            // Use secure storage with HMAC integrity verification
+            // OWASP MASVS: STORAGE-1, RESILIENCE-1
+            if let service = try AppGroup.secureGet(EmergencyService.self, forKey: "cachedEmergencyService") {
+                return service
+            }
+        } catch SecurityError.integrityCheckFailed {
+            // HMAC verification failed - data was tampered with
+            // Clean up compromised data
+            AppGroup.secureRemove(forKey: "cachedEmergencyService")
+        } catch {
         }
+        
+        // Return default service if no valid cached data
         return EmergencyServiceDatabase.shared.defaultService
     }
     
     func cacheEmergencyService(_ service: EmergencyService) {
-        // 1. Force the use of the SUITE NAME directly to ensure it hits the shared container
-        guard let sharedDefaults = UserDefaults(suiteName: "group.com.jimmygangi.emergencyroute") else {
-            print("❌ APP: Failed to initialize Shared Defaults!")
+        // Validate service data before caching
+        // OWASP MASVS: PLATFORM-1, CODE-1
+        guard EmergencyService.isValidCountryCode(service.countryCode) else {
+            return
+        }
+        
+        guard EmergencyService.isValidPhoneNumber(service.emergencyNumber) else {
+            return
+        }
+        
+        // Validate optional numbers if present
+        if let police = service.policeNumber, !EmergencyService.isValidPhoneNumber(police) {
+            return
+        }
+        
+        if let ambulance = service.ambulanceNumber, !EmergencyService.isValidPhoneNumber(ambulance) {
+            return
+        }
+        
+        if let fire = service.fireNumber, !EmergencyService.isValidPhoneNumber(fire) {
             return
         }
         
         do {
-            let data = try JSONEncoder().encode(service)
-            sharedDefaults.set(data, forKey: "cachedEmergencyService")
+            // Use secure storage with HMAC integrity protection
+            // OWASP MASVS: STORAGE-1, CRYPTO-1, RESILIENCE-1
+            try AppGroup.secureSet(service, forKey: "cachedEmergencyService")
             
-            // 2. Synchronize forces the file to be written to disk immediately
-            // instead of waiting for the system to feel like it.
-            sharedDefaults.synchronize()
-            
-            // 3. Trigger the reload
+            // Trigger widget reload
             WidgetCenter.shared.reloadAllTimelines()
-            print("💾 APP: Saved \(service.countryName) to Shared Container")
         } catch {
-            print("❌ APP: Encoding error: \(error)")
         }
     }
 }
