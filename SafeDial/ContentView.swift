@@ -26,7 +26,8 @@ struct ContentView: View {
                         }
                     }
                     .padding(.horizontal, 20)
-                    .padding(.vertical, 16)
+                    .padding(.top, 100)
+                    .padding(.bottom, 16)
                 }
             }
             .ignoresSafeArea()
