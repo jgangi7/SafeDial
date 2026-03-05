@@ -20,10 +20,6 @@ struct ContentView: View {
                             .background(.blue.opacity(0.1), in: RoundedRectangle(cornerRadius: 12))
                         }
                         
-                        Button("Force Sync") {
-                            LocationManager.shared.cacheEmergencyService(service)
-                        }
-                        
                         // Header Card
                         VStack(spacing: 8) {
                             Label("Current Region", systemImage: "mappin.circle.fill")
