@@ -46,7 +46,7 @@ struct ManualCountryPickerView: View {
                 .navigationTitle("Select Country")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(toolbarBackgroundColor, for: .navigationBar)
-                .searchable(text: $searchText, prompt: "Search countries")
+                .searchable(text: $searchText, prompt: "Search country")
                 .tint(.cerulean)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {

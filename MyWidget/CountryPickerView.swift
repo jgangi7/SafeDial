@@ -75,7 +75,7 @@ struct CountryPickerView: View {
             }
             .navigationTitle("Select Country")
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "Search countries")
+            .searchable(text: $searchText, prompt: "Search country")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
