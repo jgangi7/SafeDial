@@ -22,12 +22,10 @@
 		3FFB8EEA2F59B9CC008BD299 /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFB8EE82F59B9CC008BD299 /* LanguagePickerView.swift */; };
 		3FFB8EEC2F59BA39008BD299 /* LocalizationUsageGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFB8EEB2F59BA39008BD299 /* LocalizationUsageGuide.swift */; };
 		3FFB8EED2F59BA39008BD299 /* LocalizationUsageGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFB8EEB2F59BA39008BD299 /* LocalizationUsageGuide.swift */; };
-		3FFB8EEF2F59BAC1008BD299 /* LOCALIZATION_README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3FFB8EEE2F59BAC1008BD299 /* LOCALIZATION_README.md */; };
-		3FFB8EF02F59BAC1008BD299 /* LOCALIZATION_README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3FFB8EEE2F59BAC1008BD299 /* LOCALIZATION_README.md */; };
 		3FFB8EF52F59BB73008BD299 /* LocalizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFB8EF42F59BB73008BD299 /* LocalizedText.swift */; };
 		3FFB8EF62F59BB73008BD299 /* LocalizedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFB8EF42F59BB73008BD299 /* LocalizedText.swift */; };
-		3FFB8EF82F59BBC1008BD299 /* LOCALIZATION_FIXES.md in Resources */ = {isa = PBXBuildFile; fileRef = 3FFB8EF72F59BBC1008BD299 /* LOCALIZATION_FIXES.md */; };
-		3FFB8EF92F59BBC1008BD299 /* LOCALIZATION_FIXES.md in Resources */ = {isa = PBXBuildFile; fileRef = 3FFB8EF72F59BBC1008BD299 /* LOCALIZATION_FIXES.md */; };
+		3FFB8F612F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md in Resources */ = {isa = PBXBuildFile; fileRef = 3FFB8F602F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md */; };
+		3FFB8F622F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md in Resources */ = {isa = PBXBuildFile; fileRef = 3FFB8F602F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,9 +80,8 @@
 		3FFB8EE52F59B9B2008BD299 /* LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStrings.swift; sourceTree = "<group>"; };
 		3FFB8EE82F59B9CC008BD299 /* LanguagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePickerView.swift; sourceTree = "<group>"; };
 		3FFB8EEB2F59BA39008BD299 /* LocalizationUsageGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationUsageGuide.swift; sourceTree = "<group>"; };
-		3FFB8EEE2F59BAC1008BD299 /* LOCALIZATION_README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LOCALIZATION_README.md; sourceTree = "<group>"; };
 		3FFB8EF42F59BB73008BD299 /* LocalizedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedText.swift; sourceTree = "<group>"; };
-		3FFB8EF72F59BBC1008BD299 /* LOCALIZATION_FIXES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LOCALIZATION_FIXES.md; sourceTree = "<group>"; };
+		3FFB8F602F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = WIDGET_LOCALIZATION_CHANGES.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -116,8 +113,51 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				Assets/android/play_store_512.png,
+				"Assets/android/res/mipmap-anydpi-v26/ic_launcher.xml",
+				"Assets/android/res/mipmap-hdpi/ic_launcher.png",
+				"Assets/android/res/mipmap-hdpi/ic_launcher_background.png",
+				"Assets/android/res/mipmap-hdpi/ic_launcher_foreground.png",
+				"Assets/android/res/mipmap-hdpi/ic_launcher_monochrome.png",
+				"Assets/android/res/mipmap-mdpi/ic_launcher.png",
+				"Assets/android/res/mipmap-mdpi/ic_launcher_background.png",
+				"Assets/android/res/mipmap-mdpi/ic_launcher_foreground.png",
+				"Assets/android/res/mipmap-mdpi/ic_launcher_monochrome.png",
+				"Assets/android/res/mipmap-xhdpi/ic_launcher.png",
+				"Assets/android/res/mipmap-xhdpi/ic_launcher_background.png",
+				"Assets/android/res/mipmap-xhdpi/ic_launcher_foreground.png",
+				"Assets/android/res/mipmap-xhdpi/ic_launcher_monochrome.png",
+				"Assets/android/res/mipmap-xxhdpi/ic_launcher.png",
+				"Assets/android/res/mipmap-xxhdpi/ic_launcher_background.png",
+				"Assets/android/res/mipmap-xxhdpi/ic_launcher_foreground.png",
+				"Assets/android/res/mipmap-xxhdpi/ic_launcher_monochrome.png",
+				"Assets/android/res/mipmap-xxxhdpi/ic_launcher.png",
+				"Assets/android/res/mipmap-xxxhdpi/ic_launcher_background.png",
+				"Assets/android/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
+				"Assets/android/res/mipmap-xxxhdpi/ic_launcher_monochrome.png",
 			);
 			target = 3FF6D8B52F58AD71002B95D6 /* SafeDial */;
+		};
+		3FEC668E2F6DC98A00F1F743 /* Exceptions for "SafeDial" folder in "MyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				PrivacyInfo.xcprivacy,
+			);
+			target = 3FF6D8E32F58ADC8002B95D6 /* MyWidgetExtension */;
+		};
+		3FEC66942F6DCB3500F1F743 /* Exceptions for "SafeDial" folder in "SafeDialTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				PrivacyInfo.xcprivacy,
+			);
+			target = 3FF6D8C22F58AD73002B95D6 /* SafeDialTests */;
+		};
+		3FEC66952F6DCB3500F1F743 /* Exceptions for "SafeDial" folder in "SafeDialUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				PrivacyInfo.xcprivacy,
+			);
+			target = 3FF6D8CC2F58AD73002B95D6 /* SafeDialUITests */;
 		};
 		3FF6D8F92F58ADCA002B95D6 /* Exceptions for "MyWidget" folder in "MyWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -133,6 +173,9 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				3F57BABD2F58D48A00C79A9D /* Exceptions for "SafeDial" folder in "SafeDial" target */,
+				3FEC66942F6DCB3500F1F743 /* Exceptions for "SafeDial" folder in "SafeDialTests" target */,
+				3FEC66952F6DCB3500F1F743 /* Exceptions for "SafeDial" folder in "SafeDialUITests" target */,
+				3FEC668E2F6DC98A00F1F743 /* Exceptions for "SafeDial" folder in "MyWidgetExtension" target */,
 			);
 			path = SafeDial;
 			sourceTree = "<group>";
@@ -210,9 +253,8 @@
 				3FFB8EE52F59B9B2008BD299 /* LocalizedStrings.swift */,
 				3FFB8EE82F59B9CC008BD299 /* LanguagePickerView.swift */,
 				3FFB8EEB2F59BA39008BD299 /* LocalizationUsageGuide.swift */,
-				3FFB8EEE2F59BAC1008BD299 /* LOCALIZATION_README.md */,
 				3FFB8EF42F59BB73008BD299 /* LocalizedText.swift */,
-				3FFB8EF72F59BBC1008BD299 /* LOCALIZATION_FIXES.md */,
+				3FFB8F602F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -384,8 +426,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FFB8EF82F59BBC1008BD299 /* LOCALIZATION_FIXES.md in Resources */,
-				3FFB8EF02F59BAC1008BD299 /* LOCALIZATION_README.md in Resources */,
+				3FFB8F612F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,8 +448,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FFB8EEF2F59BAC1008BD299 /* LOCALIZATION_README.md in Resources */,
-				3FFB8EF92F59BBC1008BD299 /* LOCALIZATION_FIXES.md in Resources */,
+				3FFB8F622F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

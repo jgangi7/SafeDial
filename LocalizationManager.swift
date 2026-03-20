@@ -37,6 +37,8 @@ final class LocalizationManager: ObservableObject {
     func changeLocale(to identifier: String) {
         currentLocaleIdentifier = identifier
         currentLocale = Locale(identifier: identifier)
+        
+        // Save preference and trigger widget sync
         LocalizationPreferences.saveSelectedLocale(identifier)
     }
     
@@ -242,3 +244,6 @@ extension Array where Element: Hashable {
         }
     }
 }
+
+
+

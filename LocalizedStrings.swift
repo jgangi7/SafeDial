@@ -49,6 +49,10 @@ enum LocalizedStringKey: String, CaseIterable {
     case callPolice = "call_police"
     case callAmbulance = "call_ambulance"
     case callFire = "call_fire"
+    
+    // MARK: - Widget
+    case widgetName = "widget_name"
+    case widgetDescription = "widget_description"
 }
 
 /// Provides translations for all app strings
@@ -111,7 +115,10 @@ enum LocalizedStrings {
             .callEmergency: "Call Emergency Services",
             .callPolice: "Call Police",
             .callAmbulance: "Call Ambulance",
-            .callFire: "Call Fire Department"
+            .callFire: "Call Fire Department",
+            
+            .widgetName: "Emergency Services",
+            .widgetDescription: "Quick access to emergency service numbers for your location."
         ],
         
         // MARK: - Spanish
@@ -148,7 +155,10 @@ enum LocalizedStrings {
             .callEmergency: "Llamar a Emergencias",
             .callPolice: "Llamar a la Policía",
             .callAmbulance: "Llamar a Ambulancia",
-            .callFire: "Llamar a Bomberos"
+            .callFire: "Llamar a Bomberos",
+            
+            .widgetName: "Servicios de Emergencia",
+            .widgetDescription: "Acceso rápido a números de emergencia para tu ubicación."
         ],
         
         // MARK: - French
@@ -185,7 +195,10 @@ enum LocalizedStrings {
             .callEmergency: "Appeler les Urgences",
             .callPolice: "Appeler la Police",
             .callAmbulance: "Appeler l'Ambulance",
-            .callFire: "Appeler les Pompiers"
+            .callFire: "Appeler les Pompiers",
+            
+            .widgetName: "Services d'Urgence",
+            .widgetDescription: "Accès rapide aux numéros d'urgence pour votre emplacement."
         ],
         
         // MARK: - German
@@ -222,7 +235,10 @@ enum LocalizedStrings {
             .callEmergency: "Notruf Wählen",
             .callPolice: "Polizei Rufen",
             .callAmbulance: "Krankenwagen Rufen",
-            .callFire: "Feuerwehr Rufen"
+            .callFire: "Feuerwehr Rufen",
+            
+            .widgetName: "Notdienste",
+            .widgetDescription: "Schneller Zugriff auf Notrufnummern für Ihren Standort."
         ],
         
         // MARK: - Italian
@@ -259,7 +275,10 @@ enum LocalizedStrings {
             .callEmergency: "Chiama Emergenza",
             .callPolice: "Chiama Polizia",
             .callAmbulance: "Chiama Ambulanza",
-            .callFire: "Chiama Vigili del Fuoco"
+            .callFire: "Chiama Vigili del Fuoco",
+            
+            .widgetName: "Servizi di Emergenza",
+            .widgetDescription: "Accesso rapido ai numeri di emergenza per la tua posizione."
         ],
         
         // MARK: - Portuguese
@@ -296,7 +315,10 @@ enum LocalizedStrings {
             .callEmergency: "Ligar para Emergência",
             .callPolice: "Ligar para Polícia",
             .callAmbulance: "Ligar para Ambulância",
-            .callFire: "Ligar para Bombeiros"
+            .callFire: "Ligar para Bombeiros",
+            
+            .widgetName: "Serviços de Emergência",
+            .widgetDescription: "Acesso rápido aos números de emergência para sua localização."
         ],
         
         // MARK: - Japanese
@@ -333,7 +355,10 @@ enum LocalizedStrings {
             .callEmergency: "緊急通報",
             .callPolice: "警察に電話",
             .callAmbulance: "救急車を呼ぶ",
-            .callFire: "消防に電話"
+            .callFire: "消防に電話",
+            
+            .widgetName: "緊急サービス",
+            .widgetDescription: "現在地の緊急電話番号にすばやくアクセス。"
         ],
         
         // MARK: - Chinese (Simplified)
@@ -370,7 +395,10 @@ enum LocalizedStrings {
             .callEmergency: "拨打紧急电话",
             .callPolice: "拨打警察",
             .callAmbulance: "拨打救护车",
-            .callFire: "拨打消防"
+            .callFire: "拨打消防",
+            
+            .widgetName: "紧急服务",
+            .widgetDescription: "快速访问您所在位置的紧急电话号码。"
         ],
         
         // MARK: - Korean
@@ -407,7 +435,10 @@ enum LocalizedStrings {
             .callEmergency: "응급 전화",
             .callPolice: "경찰에 전화",
             .callAmbulance: "구급차 호출",
-            .callFire: "소방에 전화"
+            .callFire: "소방에 전화",
+            
+            .widgetName: "응급 서비스",
+            .widgetDescription: "현재 위치의 응급 전화번호에 빠르게 액세스합니다."
         ],
         
         // MARK: - Arabic
@@ -444,7 +475,10 @@ enum LocalizedStrings {
             .callEmergency: "اتصل بالطوارئ",
             .callPolice: "اتصل بالشرطة",
             .callAmbulance: "اتصل بالإسعاف",
-            .callFire: "اتصل بالإطفاء"
+            .callFire: "اتصل بالإطفاء",
+            
+            .widgetName: "خدمات الطوارئ",
+            .widgetDescription: "وصول سريع إلى أرقام الطوارئ لموقعك."
         ],
         
         // MARK: - Russian
@@ -481,7 +515,10 @@ enum LocalizedStrings {
             .callEmergency: "Вызвать Экстренные Службы",
             .callPolice: "Вызвать Полицию",
             .callAmbulance: "Вызвать Скорую",
-            .callFire: "Вызвать Пожарную"
+            .callFire: "Вызвать Пожарную",
+            
+            .widgetName: "Экстренные Службы",
+            .widgetDescription: "Быстрый доступ к номерам экстренных служб для вашего местоположения."
         ],
         
         // MARK: - Hindi
@@ -518,7 +555,10 @@ enum LocalizedStrings {
             .callEmergency: "आपातकालीन सेवाओं को कॉल करें",
             .callPolice: "पुलिस को कॉल करें",
             .callAmbulance: "एम्बुलेंस बुलाएं",
-            .callFire: "दमकल को कॉल करें"
+            .callFire: "दमकल को कॉल करें",
+            
+            .widgetName: "आपातकालीन सेवाएं",
+            .widgetDescription: "आपके स्थान के लिए आपातकालीन सेवा नंबरों तक त्वरित पहुंच।"
         ],
         
         // MARK: - Dutch
@@ -555,7 +595,10 @@ enum LocalizedStrings {
             .callEmergency: "Bel Hulpdiensten",
             .callPolice: "Bel Politie",
             .callAmbulance: "Bel Ambulance",
-            .callFire: "Bel Brandweer"
+            .callFire: "Bel Brandweer",
+            
+            .widgetName: "Hulpdiensten",
+            .widgetDescription: "Snelle toegang tot hulpdienstnummers voor uw locatie."
         ],
         
         // MARK: - Greek
@@ -592,7 +635,10 @@ enum LocalizedStrings {
             .callEmergency: "Κλήση Υπηρεσιών Έκτακτης Ανάγκης",
             .callPolice: "Κλήση Αστυνομίας",
             .callAmbulance: "Κλήση Ασθενοφόρου",
-            .callFire: "Κλήση Πυροσβεστικής"
+            .callFire: "Κλήση Πυροσβεστικής",
+            
+            .widgetName: "Υπηρεσίες Έκτακτης Ανάγκης",
+            .widgetDescription: "Γρήγορη πρόσβαση στους αριθμούς έκτακτης ανάγκης για την τοποθεσία σας."
         ],
         
         // MARK: - Turkish
@@ -629,7 +675,10 @@ enum LocalizedStrings {
             .callEmergency: "Acil Servisleri Ara",
             .callPolice: "Polisi Ara",
             .callAmbulance: "Ambulansı Ara",
-            .callFire: "İtfaiyeyi Ara"
+            .callFire: "İtfaiyeyi Ara",
+            
+            .widgetName: "Acil Servisler",
+            .widgetDescription: "Konumunuz için acil servis numaralarına hızlı erişim."
         ],
         
         // MARK: - Polish
@@ -666,7 +715,10 @@ enum LocalizedStrings {
             .callEmergency: "Zadzwoń po Pogotowie",
             .callPolice: "Zadzwoń po Policję",
             .callAmbulance: "Zadzwoń po Karetkę",
-            .callFire: "Zadzwoń po Straż Pożarną"
+            .callFire: "Zadzwoń po Straż Pożarną",
+            
+            .widgetName: "Służby Ratunkowe",
+            .widgetDescription: "Szybki dostęp do numerów alarmowych dla Twojej lokalizacji."
         ],
         
         // MARK: - Swedish
@@ -703,7 +755,10 @@ enum LocalizedStrings {
             .callEmergency: "Ring Nödtjänster",
             .callPolice: "Ring Polis",
             .callAmbulance: "Ring Ambulans",
-            .callFire: "Ring Brandkår"
+            .callFire: "Ring Brandkår",
+            
+            .widgetName: "Nödtjänster",
+            .widgetDescription: "Snabb åtkomst till nödnummer för din plats."
         ],
         
         // MARK: - Norwegian (Bokmål)
@@ -740,7 +795,10 @@ enum LocalizedStrings {
             .callEmergency: "Ring Nødtjenester",
             .callPolice: "Ring Politi",
             .callAmbulance: "Ring Ambulanse",
-            .callFire: "Ring Brannvesen"
+            .callFire: "Ring Brannvesen",
+            
+            .widgetName: "Nødtjenester",
+            .widgetDescription: "Rask tilgang til nødnumre for din posisjon."
         ],
         
         // MARK: - Danish
@@ -777,7 +835,10 @@ enum LocalizedStrings {
             .callEmergency: "Ring Nødtjenester",
             .callPolice: "Ring Politi",
             .callAmbulance: "Ring Ambulance",
-            .callFire: "Ring Brandvæsen"
+            .callFire: "Ring Brandvæsen",
+            
+            .widgetName: "Nødtjenester",
+            .widgetDescription: "Hurtig adgang til nødnumre for din placering."
         ],
         
         // MARK: - Finnish
@@ -814,7 +875,10 @@ enum LocalizedStrings {
             .callEmergency: "Soita Hätäpalveluihin",
             .callPolice: "Soita Poliisille",
             .callAmbulance: "Soita Ambulanssi",
-            .callFire: "Soita Palokunnalle"
+            .callFire: "Soita Palokunnalle",
+            
+            .widgetName: "Hätäpalvelut",
+            .widgetDescription: "Nopea pääsy hätänumeroihin sijaintisi perusteella."
         ],
         
         // MARK: - Ukrainian
@@ -851,7 +915,10 @@ enum LocalizedStrings {
             .callEmergency: "Викликати Екстрені Служби",
             .callPolice: "Викликати Поліцію",
             .callAmbulance: "Викликати Швидку",
-            .callFire: "Викликати Пожежну"
+            .callFire: "Викликати Пожежну",
+            
+            .widgetName: "Екстрені Служби",
+            .widgetDescription: "Швидкий доступ до номерів екстрених служб для вашого місцезнаходження."
         ]
     ]
 }

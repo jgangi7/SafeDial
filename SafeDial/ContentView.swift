@@ -32,6 +32,7 @@ struct ContentView: View {
             }
             .ignoresSafeArea()
         }
+        .preferredColorScheme(.light)
         .onAppear {
             // Simply use what the manager already loaded from disk
             self.selectedService = locationManager.currentEmergencyService
@@ -85,7 +86,7 @@ struct ContentView: View {
                 Button {
                     showingLanguagePicker = true
                 } label: {
-                    Image(systemName: "globe")
+                    Image(systemName: "translate")
                         .font(.headline)
                         .foregroundStyle(.blue)
                         .padding(8)
@@ -236,6 +237,10 @@ struct GlassmorphismEmergencyCard: View {
     
     @ObservedObject private var localizationManager = LocalizationManager.shared
     @State private var isPressed = false
+    @State private var alertMessage: String? = nil
+    @State private var showingCallConfirmation = false
+    @State private var pendingDialURL: URL? = nil
+    @State private var pendingDialNumber: String = ""
     
     private var localizedTitle: String {
         switch type {
@@ -249,10 +254,19 @@ struct GlassmorphismEmergencyCard: View {
             return localizationManager.localize(.fire)
         }
     }
+
+    private var localizedCallAction: String {
+        switch type {
+        case .emergency: return localizationManager.localize(.callEmergency)
+        case .police:    return localizationManager.localize(.callPolice)
+        case .ambulance: return localizationManager.localize(.callAmbulance)
+        case .fire:      return localizationManager.localize(.callFire)
+        }
+    }
     
     var body: some View {
         Button {
-            makeCall()
+            prepareCall()
         } label: {
             HStack(spacing: 20) {
                 // Left side: Icon, label, and phone number
@@ -311,6 +325,27 @@ struct GlassmorphismEmergencyCard: View {
             .animation(.easeInOut(duration: 0.15), value: isPressed)
         }
         .buttonStyle(PlainButtonStyle())
+        .confirmationDialog(
+            "\(localizedTitle) · \(service.countryName)",
+            isPresented: $showingCallConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("📞  \(pendingDialNumber)") {
+                guard let url = pendingDialURL else { return }
+                let notification = UINotificationFeedbackGenerator()
+                notification.notificationOccurred(.warning)
+                UIApplication.shared.open(url)
+            }
+            Button(localizationManager.localize(.cancel), role: .cancel) {}
+        }
+        .alert(localizationManager.localize(.securityAlert), isPresented: Binding(
+            get: { alertMessage != nil },
+            set: { if !$0 { alertMessage = nil } }
+        )) {
+            Button(localizationManager.localize(.done), role: .cancel) { alertMessage = nil }
+        } message: {
+            Text(alertMessage ?? "")
+        }
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { _ in
@@ -341,44 +376,44 @@ struct GlassmorphismEmergencyCard: View {
         }
     }
     
-    /// Makes a phone call to the emergency number with OWASP validation
+    /// Validates the number and shows a confirmation alert with the exact digits before dialing.
+    /// iOS's phone confirmation dialog may reformat short numbers (e.g. "190" → "1 (90)"),
+    /// so we show our own alert first so the user always sees the correct number.
     /// OWASP MASVS: PLATFORM-1, CODE-1, RESILIENCE-2
-    private func makeCall() {
-        guard let number = type.number(from: service) else {
-            return
-        }
-        
+    private func prepareCall() {
+        guard let number = type.number(from: service) else { return }
+
         let manager = LocalizationManager.shared
-        
+
         // OWASP MASVS: CODE-1 - Sanitize phone number
         let sanitizedNumber = EmergencyService.sanitizePhoneNumber(number)
-        
+
         // OWASP MASVS: PLATFORM-1 - Validate phone number format
         guard EmergencyService.isValidPhoneNumber(sanitizedNumber) else {
             showSecurityAlert(message: manager.localize(.invalidPhoneNumber))
             return
         }
-        
+
         // OWASP MASVS: RESILIENCE-2 - Cross-validate with database
         guard validateNumberAgainstDatabase(number: sanitizedNumber) else {
             showSecurityAlert(message: manager.localize(.validationFailed))
             return
         }
-        
+
         // OWASP MASVS: PLATFORM-1 - Validate URL construction
-        guard let url = URL(string: "tel://\(sanitizedNumber)"),
+        // Use "tel:" (not "tel://") for proper emergency number dialing
+        // Emergency numbers are local-only — do not prepend international dialing code
+        guard let url = URL(string: "tel:\(sanitizedNumber)"),
               UIApplication.shared.canOpenURL(url) else {
             showSecurityAlert(message: manager.localize(.unableToMakeCall))
             return
         }
-        
-        // All security checks passed
-        
-        // Haptic feedback before call
-        let notification = UINotificationFeedbackGenerator()
-        notification.notificationOccurred(.warning)
-        
-        UIApplication.shared.open(url)
+
+        // All checks passed — show our confirmation so the user sees the correct number
+        // before iOS's phone dialog (which may misformat short numbers like "190" as "1 (90)")
+        pendingDialNumber = sanitizedNumber
+        pendingDialURL = url
+        showingCallConfirmation = true
     }
     
     /// Cross-validates phone number against emergency service database
@@ -396,10 +431,8 @@ struct GlassmorphismEmergencyCard: View {
     
     /// Shows security alert to user
     private func showSecurityAlert(message: String) {
-        // Haptic feedback for error
         let notification = UINotificationFeedbackGenerator()
         notification.notificationOccurred(.error)
-        
-        // In a production app, you might show a SwiftUI alert here
+        alertMessage = message
     }
 }

@@ -45,6 +45,7 @@ struct LanguagePickerView: View {
                 }
         }
         .tint(.cerulean)
+        .preferredColorScheme(.light)
     }
     
     private var toolbarBackgroundColor: Color {
@@ -91,7 +92,7 @@ struct LanguagePickerView: View {
     private var currentLanguageCard: some View {
         VStack(spacing: 12) {
             HStack {
-                Image(systemName: "globe")
+                Image(systemName: "translate")
                     .font(.headline)
                     .foregroundStyle(.blue)
                 
@@ -173,7 +174,7 @@ struct LocaleRowView: View {
                 Text(flag)
                     .font(.system(size: 32))
             } else {
-                Image(systemName: "globe")
+                Image(systemName: "translate")
                     .font(.system(size: 24))
                     .foregroundStyle(.secondary)
                     .frame(width: 32)

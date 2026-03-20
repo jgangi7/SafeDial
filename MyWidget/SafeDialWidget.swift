@@ -27,6 +27,7 @@ struct SafeDialWidget: Widget {
 struct EmergencyEntry: TimelineEntry {
     let date: Date
     let service: EmergencyService
+    let locale: Locale // Add locale to timeline entry for translations
 }
 
 // MARK: - Timeline Provider
@@ -37,25 +38,37 @@ struct EmergencyServiceProvider: TimelineProvider {
     func placeholder(in context: Context) -> EmergencyEntry {
         // Use the actual cached service for placeholder as well
         let service = loadCachedService()
-        return EmergencyEntry(date: Date(), service: service)
+        let locale = loadCachedLocale()
+        return EmergencyEntry(date: Date(), service: service, locale: locale)
     }
     
     func getSnapshot(in context: Context, completion: @escaping (EmergencyEntry) -> Void) {
         let service = loadCachedService()
-        let entry = EmergencyEntry(date: Date(), service: service)
+        let locale = loadCachedLocale()
+        let entry = EmergencyEntry(date: Date(), service: service, locale: locale)
         completion(entry)
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<EmergencyEntry>) -> Void) {
         let currentDate = Date()
         let service = loadCachedService()
-        let entry = EmergencyEntry(date: currentDate, service: service)
+        let locale = loadCachedLocale()
+        let entry = EmergencyEntry(date: currentDate, service: service, locale: locale)
         
         // Reload more frequently to pick up changes from the app
         let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: currentDate)!
         let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
         
         completion(timeline)
+    }
+    
+    /// Loads cached locale preference for translations
+    private func loadCachedLocale() -> Locale {
+        if let identifier = LocalizationPreferences.loadSelectedLocale() {
+            return Locale(identifier: identifier)
+        }
+
+        return Locale.current
     }
     
     /// Loads cached service with HMAC integrity verification
@@ -192,7 +205,7 @@ struct SmallWidgetView: View {
                         .font(.caption2)
                         .foregroundStyle(.red)
                     
-                    Text("Emergency")
+                    Text(LocalizedStrings.translate(.emergency, locale: entry.locale))
                         .font(.caption2)
                         .fontWeight(.medium)
                         .foregroundStyle(.secondary)
@@ -206,6 +219,7 @@ struct SmallWidgetView: View {
         }
         .padding(14)
         .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
+        .environment(\.colorScheme, .light)
     }
 }
 
@@ -238,7 +252,7 @@ struct MediumWidgetView: View {
             // Right section - Emergency Numbers
             VStack(alignment: .leading, spacing: 8) {
                 WidgetNumberRow(
-                    label: "Emer...",
+                    label: LocalizedStrings.translate(.emergency, locale: entry.locale),
                     number: entry.service.emergencyNumber,
                     color: .red,
                     isPrimary: true
@@ -246,7 +260,7 @@ struct MediumWidgetView: View {
                 
                 if let ambulance = entry.service.ambulanceNumber, ambulance != entry.service.emergencyNumber {
                     WidgetNumberRow(
-                        label: "Ambula...",
+                        label: LocalizedStrings.translate(.ambulance, locale: entry.locale),
                         number: ambulance,
                         color: .green,
                         isPrimary: false
@@ -255,7 +269,7 @@ struct MediumWidgetView: View {
                 
                 if let fire = entry.service.fireNumber, fire != entry.service.emergencyNumber {
                     WidgetNumberRow(
-                        label: "Fire",
+                        label: LocalizedStrings.translate(.fire, locale: entry.locale),
                         number: fire,
                         color: .orange,
                         isPrimary: false
@@ -266,6 +280,7 @@ struct MediumWidgetView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
         .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
+        .environment(\.colorScheme, .light)
     }
 }
 
@@ -316,6 +331,7 @@ struct AccessoryCircularView: View {
             }
         }
         .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
+        .environment(\.colorScheme, .light)
     }
 }
 
@@ -347,6 +363,7 @@ struct AccessoryRectangularView: View {
             }
         }
         .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
+        .environment(\.colorScheme, .light)
     }
 }
 
@@ -400,7 +417,8 @@ enum WidgetURLBuilder {
             policeNumber: "911",
             ambulanceNumber: "911",
             fireNumber: "911"
-        )
+        ),
+        locale: Locale(identifier: "en-US")
     )
 }
 
@@ -416,6 +434,7 @@ enum WidgetURLBuilder {
             policeNumber: "17",
             ambulanceNumber: "15",
             fireNumber: "18"
-        )
+        ),
+        locale: Locale(identifier: "fr-FR")
     )
 }

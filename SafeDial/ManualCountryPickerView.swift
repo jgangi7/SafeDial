@@ -56,6 +56,7 @@ struct ManualCountryPickerView: View {
                 }
         }
         .tint(.cerulean)
+        .preferredColorScheme(.light)
     }
     
     private var toolbarBackgroundColor: Color {

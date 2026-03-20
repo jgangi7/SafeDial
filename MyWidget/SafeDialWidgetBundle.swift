@@ -10,10 +10,6 @@ import SwiftUI
 
 @main
 struct SafeDialWidgetBundle: WidgetBundle {
-    init() {
-        print("🔷 SafeDialWidgetBundle: Widget extension launched")
-    }
-    
     var body: some Widget {
         SafeDialWidget()
     }

@@ -53,10 +53,10 @@ struct EmergencyService: Codable, Hashable, Sendable {
             return false
         }
         
-        // Emergency numbers should be between 3-6 digits (global standard)
-        // Some countries use 3 digits (911, 112), others use up to 6
+        // Emergency numbers should be between 2-6 digits for the local part
+        // With country code (+XX), total can be up to ~10 digits
         let digitCount = number.filter { $0.isNumber }.count
-        guard digitCount >= 2 && digitCount <= 6 else {
+        guard digitCount >= 2 && digitCount <= 10 else {
             return false
         }
         
