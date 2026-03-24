@@ -219,7 +219,6 @@ struct SmallWidgetView: View {
         }
         .padding(14)
         .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
-        .environment(\.colorScheme, .light)
     }
 }
 
@@ -280,7 +279,6 @@ struct MediumWidgetView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
         .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
-        .environment(\.colorScheme, .light)
     }
 }
 
