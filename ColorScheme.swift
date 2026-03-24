@@ -8,18 +8,39 @@
 import SwiftUI
 
 extension Color {
-    // Custom color scheme
-    static let honeydew = Color(hex: "f1faee")
-    static let frostedBlue = Color(hex: "a8dadc")
-    static let cerulean = Color(hex: "457b9d")
-    static let oxfordNavy = Color(hex: "1d3557")
-    
-    // Semantic colors for the app
-    static let appBackground = honeydew
-    static let cardBackground = frostedBlue.opacity(0.3)
-    static let primaryAccent = cerulean
-    static let secondaryAccent = oxfordNavy
-    static let emergencyRed = Color(hex: "e63946")
+    // Tactical Calm — Surface Hierarchy
+    static let tcSurface             = Color(hex: "f8f9fb")
+    static let tcSurfaceContainer    = Color(hex: "eceef0")
+    static let tcSurfaceContainerHigh = Color(hex: "e6e8ea")
+    static let tcSurfaceContainerLowest = Color(hex: "ffffff")
+    static let tcSurfaceDim          = Color(hex: "d8dadc")
+
+    // Tactical Calm — Primary (Emergency Red)
+    static let tcPrimary             = Color(hex: "89000e")
+    static let tcPrimaryContainer    = Color(hex: "b1121b")
+
+    // Tactical Calm — Secondary (Clinical Blue)
+    static let tcSecondary           = Color(hex: "115cb9")
+    static let tcSecondaryContainer  = Color(hex: "659dfe")
+
+    // Tactical Calm — Tertiary (Amber/Fire)
+    static let tcTertiary            = Color(hex: "722b00")
+    static let tcTertiaryContainer   = Color(hex: "983c00")
+
+    // Tactical Calm — Text & Outline
+    static let tcOnSurface           = Color(hex: "191c1e")
+    static let tcOnSurfaceVariant    = Color(hex: "424752")
+    static let tcOutline             = Color(hex: "727784")
+
+    // Legacy aliases — updated to Tactical Calm values
+    static let honeydew      = tcSurface
+    static let cerulean      = tcSecondary
+    static let oxfordNavy    = tcOnSurface
+    static let emergencyRed  = tcPrimary
+    static let appBackground = tcSurface
+    static let cardBackground = tcSurfaceContainer
+    static let primaryAccent = tcSecondary
+    static let secondaryAccent = tcOnSurface
 }
 
 extension Color {

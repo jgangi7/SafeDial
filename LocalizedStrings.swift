@@ -23,7 +23,8 @@ enum LocalizedStringKey: String, CaseIterable {
     case searchCountry = "search_country"
     case noCountrySelected = "no_country_selected"
     case noCountryMessage = "no_country_message"
-    
+    case locationPrivacy = "location_privacy"
+
     // MARK: - Emergency Services
     case emergency = "emergency"
     case police = "police"
@@ -94,6 +95,7 @@ enum LocalizedStrings {
             .searchCountry: "Search country",
             .noCountrySelected: "No Country Selected",
             .noCountryMessage: "Select a country manually or enable location services to automatically detect your region.",
+            .locationPrivacy: "Your location is never shared",
             
             .emergency: "Emergency",
             .police: "Police",
@@ -134,6 +136,7 @@ enum LocalizedStrings {
             .searchCountry: "Buscar país",
             .noCountrySelected: "Ningún País Seleccionado",
             .noCountryMessage: "Seleccione un país manualmente o active los servicios de ubicación para detectar automáticamente su región.",
+            .locationPrivacy: "Tu ubicación nunca se comparte",
             
             .emergency: "Emergencia",
             .police: "Policía",
@@ -174,6 +177,7 @@ enum LocalizedStrings {
             .searchCountry: "Rechercher un pays",
             .noCountrySelected: "Aucun Pays Sélectionné",
             .noCountryMessage: "Sélectionnez un pays manuellement ou activez les services de localisation pour détecter automatiquement votre région.",
+            .locationPrivacy: "Votre position n'est jamais partagée",
             
             .emergency: "Urgence",
             .police: "Police",
@@ -214,6 +218,7 @@ enum LocalizedStrings {
             .searchCountry: "Land suchen",
             .noCountrySelected: "Kein Land Ausgewählt",
             .noCountryMessage: "Wählen Sie ein Land manuell aus oder aktivieren Sie die Ortungsdienste, um Ihre Region automatisch zu erkennen.",
+            .locationPrivacy: "Ihr Standort wird niemals geteilt",
             
             .emergency: "Notfall",
             .police: "Polizei",
@@ -254,6 +259,7 @@ enum LocalizedStrings {
             .searchCountry: "Cerca paese",
             .noCountrySelected: "Nessun Paese Selezionato",
             .noCountryMessage: "Seleziona un paese manualmente o abilita i servizi di localizzazione per rilevare automaticamente la tua regione.",
+            .locationPrivacy: "La tua posizione non viene mai condivisa",
             
             .emergency: "Emergenza",
             .police: "Polizia",
@@ -294,6 +300,7 @@ enum LocalizedStrings {
             .searchCountry: "Pesquisar país",
             .noCountrySelected: "Nenhum País Selecionado",
             .noCountryMessage: "Selecione um país manualmente ou ative os serviços de localização para detectar automaticamente sua região.",
+            .locationPrivacy: "Sua localização nunca é compartilhada",
             
             .emergency: "Emergência",
             .police: "Polícia",
@@ -334,6 +341,7 @@ enum LocalizedStrings {
             .searchCountry: "国を検索",
             .noCountrySelected: "国が選択されていません",
             .noCountryMessage: "手動で国を選択するか、位置情報サービスを有効にして自動的に地域を検出してください。",
+            .locationPrivacy: "位置情報は共有されません",
             
             .emergency: "緊急",
             .police: "警察",
@@ -374,6 +382,7 @@ enum LocalizedStrings {
             .searchCountry: "搜索国家",
             .noCountrySelected: "未选择国家",
             .noCountryMessage: "手动选择国家或启用定位服务以自动检测您的地区。",
+            .locationPrivacy: "您的位置信息不会被分享",
             
             .emergency: "紧急",
             .police: "警察",
@@ -414,6 +423,7 @@ enum LocalizedStrings {
             .searchCountry: "국가 검색",
             .noCountrySelected: "선택된 국가 없음",
             .noCountryMessage: "수동으로 국가를 선택하거나 위치 서비스를 활성화하여 지역을 자동으로 감지하세요.",
+            .locationPrivacy: "위치는 절대 공유되지 않습니다",
             
             .emergency: "응급",
             .police: "경찰",
@@ -454,6 +464,7 @@ enum LocalizedStrings {
             .searchCountry: "البحث عن بلد",
             .noCountrySelected: "لم يتم اختيار بلد",
             .noCountryMessage: "اختر بلداً يدوياً أو قم بتمكين خدمات الموقع للكشف التلقائي عن منطقتك.",
+            .locationPrivacy: "موقعك لا يتم مشاركته أبداً",
             
             .emergency: "طوارئ",
             .police: "الشرطة",
@@ -494,6 +505,7 @@ enum LocalizedStrings {
             .searchCountry: "Поиск страны",
             .noCountrySelected: "Страна Не Выбрана",
             .noCountryMessage: "Выберите страну вручную или включите службы определения местоположения для автоматического определения вашего региона.",
+            .locationPrivacy: "Ваше местоположение никогда не передаётся",
             
             .emergency: "Экстренная",
             .police: "Полиция",
@@ -534,6 +546,7 @@ enum LocalizedStrings {
             .searchCountry: "देश खोजें",
             .noCountrySelected: "कोई देश नहीं चुना गया",
             .noCountryMessage: "मैन्युअल रूप से एक देश चुनें या अपने क्षेत्र का स्वचालित रूप से पता लगाने के लिए स्थान सेवाओं को सक्षम करें।",
+            .locationPrivacy: "आपका स्थान कभी साझा नहीं किया जाता",
             
             .emergency: "आपातकाल",
             .police: "पुलिस",
@@ -574,6 +587,7 @@ enum LocalizedStrings {
             .searchCountry: "Zoek land",
             .noCountrySelected: "Geen Land Geselecteerd",
             .noCountryMessage: "Selecteer handmatig een land of schakel locatiediensten in om uw regio automatisch te detecteren.",
+            .locationPrivacy: "Uw locatie wordt nooit gedeeld",
             
             .emergency: "Noodgeval",
             .police: "Politie",
@@ -614,6 +628,7 @@ enum LocalizedStrings {
             .searchCountry: "Αναζήτηση χώρας",
             .noCountrySelected: "Δεν Επιλέχθηκε Χώρα",
             .noCountryMessage: "Επιλέξτε μια χώρα χειροκίνητα ή ενεργοποιήστε τις υπηρεσίες τοποθεσίας για αυτόματο εντοπισμό της περιοχής σας.",
+            .locationPrivacy: "Η τοποθεσία σας δεν κοινοποιείται ποτέ",
             
             .emergency: "Επείγον",
             .police: "Αστυνομία",
@@ -654,6 +669,7 @@ enum LocalizedStrings {
             .searchCountry: "Ülke ara",
             .noCountrySelected: "Ülke Seçilmedi",
             .noCountryMessage: "Manuel olarak bir ülke seçin veya bölgenizi otomatik olarak algılamak için konum hizmetlerini etkinleştirin.",
+            .locationPrivacy: "Konumunuz asla paylaşılmaz",
             
             .emergency: "Acil Durum",
             .police: "Polis",
@@ -694,6 +710,7 @@ enum LocalizedStrings {
             .searchCountry: "Szukaj kraju",
             .noCountrySelected: "Nie Wybrano Kraju",
             .noCountryMessage: "Wybierz kraj ręcznie lub włącz usługi lokalizacji, aby automatycznie wykryć swój region.",
+            .locationPrivacy: "Twoja lokalizacja nigdy nie jest udostępniana",
             
             .emergency: "Pogotowie",
             .police: "Policja",
@@ -734,6 +751,7 @@ enum LocalizedStrings {
             .searchCountry: "Sök land",
             .noCountrySelected: "Inget Land Valt",
             .noCountryMessage: "Välj ett land manuellt eller aktivera platstjänster för att automatiskt upptäcka din region.",
+            .locationPrivacy: "Din plats delas aldrig",
             
             .emergency: "Nödsituation",
             .police: "Polis",
@@ -774,6 +792,7 @@ enum LocalizedStrings {
             .searchCountry: "Søk land",
             .noCountrySelected: "Ingen Land Valgt",
             .noCountryMessage: "Velg et land manuelt eller aktiver posisjonstjenester for å automatisk oppdage din region.",
+            .locationPrivacy: "Din posisjon deles aldri",
             
             .emergency: "Nødsituasjon",
             .police: "Politi",
@@ -814,6 +833,7 @@ enum LocalizedStrings {
             .searchCountry: "Søg land",
             .noCountrySelected: "Intet Land Valgt",
             .noCountryMessage: "Vælg et land manuelt eller aktiver placeringstjenester for automatisk at registrere din region.",
+            .locationPrivacy: "Din placering deles aldrig",
             
             .emergency: "Nødsituation",
             .police: "Politi",
@@ -854,6 +874,7 @@ enum LocalizedStrings {
             .searchCountry: "Etsi maata",
             .noCountrySelected: "Ei Valittua Maata",
             .noCountryMessage: "Valitse maa manuaalisesti tai ota sijaintipalvelut käyttöön alueesi automaattiseksi tunnistamiseksi.",
+            .locationPrivacy: "Sijaintiasi ei koskaan jaeta",
             
             .emergency: "Hätätilanne",
             .police: "Poliisi",
@@ -894,6 +915,7 @@ enum LocalizedStrings {
             .searchCountry: "Шукати країну",
             .noCountrySelected: "Країну Не Вибрано",
             .noCountryMessage: "Виберіть країну вручну або увімкніть служби визначення місцезнаходження для автоматичного визначення вашого регіону.",
+            .locationPrivacy: "Ваше місцезнаходження ніколи не передається",
             
             .emergency: "Екстрена",
             .police: "Поліція",

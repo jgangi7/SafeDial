@@ -46,46 +46,42 @@ struct ManualCountryPickerView: View {
             contentView
                 .navigationTitle(String(localized: .selectCountry))
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbarBackground(toolbarBackgroundColor, for: .navigationBar)
+                .toolbarBackground(Color.tcSurface, for: .navigationBar)
                 .searchable(text: $searchText, prompt: String(localized: .searchCountry))
-                .tint(.cerulean)
+                .tint(Color.tcSecondary)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         cancelButton
                     }
                 }
         }
-        .tint(.cerulean)
+        .tint(Color.tcSecondary)
         .preferredColorScheme(.light)
     }
-    
-    private var toolbarBackgroundColor: Color {
-        Color.honeydew.opacity(0.95)
-    }
-    
+
     private var cancelButton: some View {
         Button {
             dismiss()
         } label: {
             LocalizedText(.cancel)
-                .foregroundStyle(Color.cerulean)
+                .foregroundStyle(Color.tcSecondary)
         }
     }
-    
+
     private var contentView: some View {
         ZStack {
-            // Background
-            Color.honeydew.ignoresSafeArea()
-            
+            Color.tcSurface.ignoresSafeArea()
             serviceList
         }
     }
-    
+
     private var serviceList: some View {
         List(filteredServices, id: \.countryCode) { service in
             serviceButton(for: service)
-                .listRowBackground(Color.white.opacity(0.6))
+                .listRowBackground(Color.tcSurfaceContainerLowest)
+                .listRowSeparator(.hidden)
         }
+        .listStyle(.plain)
         .scrollContentBackground(.hidden)
     }
     
@@ -108,39 +104,37 @@ struct ManualCountryPickerView: View {
 struct CountryRowView: View {
     let service: EmergencyService
     let isSelected: Bool
-    
+
     var body: some View {
-        HStack(spacing: 12) {
-            // Flag emoji
+        HStack(spacing: 14) {
             Text(service.flag)
-                .font(.system(size: 40))
-            
-            VStack(alignment: .leading, spacing: 4) {
+                .font(.system(size: 36))
+
+            VStack(alignment: .leading, spacing: 3) {
                 Text(service.countryName)
-                    .font(.headline)
-                    .foregroundStyle(Color.oxfordNavy)
-                
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(Color.tcOnSurface)
+
                 HStack(spacing: 4) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.caption2)
-                        .foregroundStyle(Color.emergencyRed)
-                    
+                        .foregroundStyle(Color.tcPrimary)
+
                     Text(service.emergencyNumber)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundStyle(Color.oxfordNavy.opacity(0.7))
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(Color.tcOnSurfaceVariant)
                 }
             }
-            
+
             Spacer()
-            
+
             if isSelected {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.title3)
-                    .foregroundStyle(Color.cerulean)
+                    .foregroundStyle(Color.tcSecondary)
             }
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 8)
     }
 }
 

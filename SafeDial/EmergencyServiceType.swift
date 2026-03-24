@@ -42,59 +42,43 @@ enum EmergencyServiceType {
         }
     }
     
-    /// Gradient background for each service type
+    /// Gradient background for each service type (Tactical Calm palette, 135°)
     var gradient: LinearGradient {
         switch self {
         case .emergency:
             return LinearGradient(
-                colors: [
-                    Color(red: 0.9, green: 0.2, blue: 0.2),
-                    Color(red: 0.7, green: 0.1, blue: 0.1)
-                ],
+                colors: [Color.tcPrimary, Color.tcPrimaryContainer],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         case .police:
             return LinearGradient(
-                colors: [
-                    Color(red: 0.2, green: 0.4, blue: 0.9),
-                    Color(red: 0.1, green: 0.3, blue: 0.7)
-                ],
+                colors: [Color.tcSecondary, Color(hex: "0a4a9e")],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         case .ambulance:
             return LinearGradient(
-                colors: [
-                    Color(red: 0.2, green: 0.8, blue: 0.4),
-                    Color(red: 0.1, green: 0.6, blue: 0.3)
-                ],
+                colors: [Color(hex: "006a4e"), Color(hex: "004d38")],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         case .fire:
             return LinearGradient(
-                colors: [
-                    Color(red: 1.0, green: 0.6, blue: 0.2),
-                    Color(red: 0.9, green: 0.4, blue: 0.1)
-                ],
+                colors: [Color.tcTertiaryContainer, Color.tcTertiary],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         }
     }
-    
-    /// Solid color for icons and accents
+
+    /// Solid color for call button icon tint
     var solidColor: Color {
         switch self {
-        case .emergency:
-            return Color(red: 0.9, green: 0.2, blue: 0.2)
-        case .police:
-            return Color(red: 0.2, green: 0.4, blue: 0.9)
-        case .ambulance:
-            return Color(red: 0.2, green: 0.8, blue: 0.4)
-        case .fire:
-            return Color(red: 1.0, green: 0.6, blue: 0.2)
+        case .emergency:  return Color.tcPrimary
+        case .police:     return Color.tcSecondary
+        case .ambulance:  return Color(hex: "006a4e")
+        case .fire:       return Color.tcTertiaryContainer
         }
     }
     

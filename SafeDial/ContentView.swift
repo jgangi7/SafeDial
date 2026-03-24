@@ -10,16 +10,11 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Soft pastel gradient background (8k quality aesthetic)
-                softPastelBackground
-                Spacer();
+                Color.tcSurface.ignoresSafeArea()
                 ScrollView {
-                    VStack(spacing: 24) {
+                    VStack(spacing: 20) {
                         if let service = selectedService {
-                            // Smart Location Card
                             smartLocationCard(for: service)
-                            
-                            // Main emergency action cards
                             emergencyActionCards(for: service)
                         } else {
                             emptyStateView
@@ -27,7 +22,7 @@ struct ContentView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 100)
-                    .padding(.bottom, 16)
+                    .padding(.bottom, 24)
                 }
             }
             .ignoresSafeArea()
@@ -54,93 +49,67 @@ struct ContentView: View {
     }
     
     // MARK: - Subviews
-    
-    /// Soft pastel gradient background for 8k aesthetic
-    private var softPastelBackground: some View {
-        LinearGradient(
-            colors: [
-                Color(red: 0.95, green: 0.93, blue: 0.98),  // Soft lavender
-                Color(red: 0.93, green: 0.95, blue: 0.98),  // Soft sky blue
-                Color(red: 0.98, green: 0.95, blue: 0.93)   // Soft peach
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-    }
-    
-    /// Smart Location Card with glassmorphism and flag
+
+    /// Location card — Tactical Calm tonal surface, no glassmorphism
     private func smartLocationCard(for service: EmergencyService) -> some View {
         VStack(spacing: 16) {
-            // Title with globe button
             HStack {
                 Image(systemName: "location.fill")
-                    .font(.headline)
-                    .foregroundStyle(.blue)
-                
+                    .font(.subheadline)
+                    .foregroundStyle(Color.tcSecondary)
+
                 LocalizedText(.location)
-                    .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.primary)
-                
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Color.tcOnSurfaceVariant)
+
                 Spacer()
-                
+
                 Button {
                     showingLanguagePicker = true
                 } label: {
                     Image(systemName: "translate")
-                        .font(.headline)
-                        .foregroundStyle(.blue)
+                        .font(.subheadline)
+                        .foregroundStyle(Color.tcSecondary)
                         .padding(8)
-                        .background(
-                            Circle()
-                                .fill(Color(.systemGray6))
-                        )
+                        .background(Circle().fill(Color.tcSurfaceContainerHigh))
                 }
                 .accessibilityLabel(localizationManager.localize(.selectLanguage))
             }
-            
-            Divider()
-                .background(.quaternary)
-            
-            // Flag, country info, and change button inline
+
             HStack(spacing: 16) {
-                // High-resolution flag icon with country name stacked below
-                VStack(spacing: 8) {
+                VStack(spacing: 6) {
                     Text(service.flag)
                         .font(.system(size: 48))
-                    
+
                     Text(service.smartLocationDisplay)
-                        .font(.system(size: 20, weight: .semibold, design: .rounded))
-                        .foregroundStyle(.primary)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.tcOnSurface)
                         .multilineTextAlignment(.center)
                 }
-                
+
                 Spacer()
-                
-                // Change button - subtle grey pill inline
+
                 Button {
                     showingCountryPicker = true
                 } label: {
-                    HStack {
+                    HStack(spacing: 6) {
                         Image(systemName: "arrow.triangle.2.circlepath")
-                            .font(.subheadline)
+                            .font(.caption)
                         LocalizedText(.change)
-                            .font(.system(size: 15, weight: .semibold, design: .rounded))
+                            .font(.system(size: 14, weight: .semibold))
                     }
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
-                    .background(
-                        Capsule()
-                            .fill(Color(.systemGray5))
-                    )
+                    .foregroundStyle(Color.tcOnSurfaceVariant)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 9)
+                    .background(Capsule().fill(Color.tcSurfaceContainerHigh))
                 }
             }
         }
-        .padding(24)
+        .padding(20)
         .background(
-            RoundedRectangle(cornerRadius: 28)
-                .fill(.ultraThickMaterial)
-                .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 6)
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.tcSurfaceContainer)
+                .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 8)
         )
     }
     
@@ -180,50 +149,101 @@ struct ContentView: View {
         }
     }
     
-    /// Empty state when no country is selected
+    /// Empty state — Tactical Calm: tonal surface, red gradient CTA
     private var emptyStateView: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "globe")
-                .font(.system(size: 72))
-                .foregroundStyle(.blue.gradient)
-                .padding(.top, 60)
-            
-            VStack(spacing: 12) {
-                LocalizedText(.noCountrySelected)
-                    .font(.system(size: 26, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primary)
-                
-                LocalizedText(.noCountryMessage)
-                    .font(.system(size: 16, weight: .regular, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
+        VStack(spacing: 0) {
+            // Translate / language button top-right
+            HStack {
+                Spacer()
+                Button {
+                    showingLanguagePicker = true
+                } label: {
+                    Image(systemName: "translate")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.tcOnSurfaceVariant)
+                        .padding(10)
+                        .background(Circle().fill(Color.tcSurfaceContainerHigh))
+                }
+                .accessibilityLabel(localizationManager.localize(.selectLanguage))
             }
-            
+            .padding(.bottom, 32)
+
+            // Globe icon with secondary blue gradient
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.tcSecondary, Color.tcSecondaryContainer],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 96, height: 96)
+                    .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 8)
+
+                Image(systemName: "globe")
+                    .font(.system(size: 44, weight: .semibold))
+                    .foregroundStyle(.white)
+            }
+            .padding(.bottom, 28)
+
+            // Headline — asymmetric left margin per editorial style
+            LocalizedText(.noCountrySelected)
+                .font(.system(size: 28, weight: .bold))
+                .foregroundStyle(Color.tcOnSurface)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 4)
+                .padding(.bottom, 12)
+
+            LocalizedText(.noCountryMessage)
+                .font(.system(size: 15, weight: .regular))
+                .foregroundStyle(Color.tcOnSurfaceVariant)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 4)
+                .padding(.bottom, 32)
+
+            // Primary CTA — red gradient, large touch target
             Button {
                 showingCountryPicker = true
             } label: {
-                HStack {
+                HStack(spacing: 10) {
                     Image(systemName: "globe")
+                        .font(.system(size: 17, weight: .semibold))
                     LocalizedText(.selectCountry)
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .font(.system(size: 17, weight: .semibold))
                 }
                 .foregroundStyle(.white)
-                .padding(.horizontal, 32)
-                .padding(.vertical, 16)
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: 56)
                 .background(
-                    RoundedRectangle(cornerRadius: 28)
-                        .fill(.blue.gradient)
-                        .shadow(color: .blue.opacity(0.3), radius: 12, x: 0, y: 6)
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.tcPrimary, Color.tcPrimaryContainer],
+                                startPoint: UnitPoint(x: 0.15, y: 0),
+                                endPoint: UnitPoint(x: 0.85, y: 1)
+                            )
+                        )
+                        .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 12)
                 )
             }
-            .padding(.top, 8)
+            .padding(.bottom, 16)
+
+            // Privacy reassurance
+            HStack(spacing: 6) {
+                Image(systemName: "lock.fill")
+                    .font(.caption2)
+                Text(localizationManager.localize(.locationPrivacy))
+                    .font(.system(size: 12))
+            }
+            .foregroundStyle(Color.tcOutline)
         }
-        .padding(32)
+        .padding(24)
         .background(
-            RoundedRectangle(cornerRadius: 28)
-                .fill(.ultraThickMaterial)
-                .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 6)
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.tcSurfaceContainer)
+                .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 8)
         )
     }
 }
@@ -269,58 +289,37 @@ struct GlassmorphismEmergencyCard: View {
             prepareCall()
         } label: {
             HStack(spacing: 20) {
-                // Left side: Icon, label, and phone number
+                // Left: icon, label, phone number
                 VStack(alignment: .leading, spacing: 8) {
-                    // Icon and title
-                    HStack(spacing: 12) {
+                    HStack(spacing: 10) {
                         Image(systemName: type.icon)
-                            .font(.title2)
+                            .font(.system(size: 18, weight: .semibold))
                             .foregroundStyle(.white)
-                        
+
                         Text(localizedTitle)
-                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            .font(.system(size: 18, weight: .semibold))
                             .foregroundStyle(.white)
                     }
-                    
-                    // Large format phone number
+
                     if let number = type.number(from: service) {
                         Text(number)
-                            .font(.system(size: 38, weight: .bold, design: .rounded))
+                            .font(.system(size: 40, weight: .bold))
                             .foregroundStyle(.white)
+                            .tracking(-0.5)
                     }
                 }
-                
+
                 Spacer()
-                
-                // Right side: Circular call button
+
                 callButton
             }
             .padding(24)
             .frame(maxWidth: .infinity)
             .background(
-                ZStack {
-                    // Gradient background
-                    RoundedRectangle(cornerRadius: 28)
-                        .fill(type.gradient)
-                    
-                    // Glassmorphism overlay
-                    RoundedRectangle(cornerRadius: 28)
-                        .fill(.ultraThinMaterial)
-                        .opacity(0.3)
-                    
-                    // Inner glow (rim light)
-                    RoundedRectangle(cornerRadius: 28)
-                        .strokeBorder(
-                            LinearGradient(
-                                colors: [.white.opacity(0.4), .white.opacity(0.1)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 1.5
-                        )
-                }
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(type.gradient)
+                    .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 12)
             )
-            .shadow(color: type.solidColor.opacity(0.25), radius: 16, x: 0, y: 8)
             .scaleEffect(isPressed ? 0.97 : 1.0)
             .animation(.easeInOut(duration: 0.15), value: isPressed)
         }
@@ -362,16 +361,16 @@ struct GlassmorphismEmergencyCard: View {
         )
     }
     
-    /// Circular call button with phone glyph (60x60pt hit target)
+    /// Circular call button — white well, service-colored icon
     private var callButton: some View {
         ZStack {
             Circle()
-                .fill(.white.opacity(0.95))
+                .fill(Color.tcSurfaceContainerLowest)
                 .frame(width: 60, height: 60)
-                .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
-            
+                .shadow(color: Color.tcOnSurface.opacity(0.1), radius: 8, x: 0, y: 4)
+
             Image(systemName: "phone.fill")
-                .font(.system(size: 24, weight: .bold))
+                .font(.system(size: 22, weight: .bold))
                 .foregroundStyle(type.solidColor)
         }
     }
