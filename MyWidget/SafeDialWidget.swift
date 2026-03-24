@@ -317,21 +317,19 @@ struct WidgetNumberRow: View {
 
 struct AccessoryCircularView: View {
     var entry: EmergencyEntry
-    
+
     var body: some View {
-        ZStack {
-            AccessoryWidgetBackground()
-            VStack(spacing: 2) {
-                Image(systemName: "exclamationmark.triangle.fill")
-                    .font(.caption2)
-                
-                Text(entry.service.emergencyNumber)
-                    .font(.caption)
-                    .fontWeight(.bold)
-            }
+        VStack(spacing: 1) {
+            Image(systemName: "phone.fill")
+                .font(.system(size: 22, weight: .bold))
+                .widgetAccentable()
+
+            Text(entry.service.emergencyNumber)
+                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
         }
         .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
-        .environment(\.colorScheme, .light)
     }
 }
 
