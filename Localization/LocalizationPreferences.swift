@@ -10,43 +10,39 @@ import Foundation
 /// Manages user preferences for localization with widget sync
 enum LocalizationPreferences {
     private static let selectedLocaleKey = "selectedLocaleIdentifier"
-    
+    private static let selectedLocalePlainKey = "selectedLocaleIdentifierPlain"
+
     /// Saves the user's selected locale identifier and syncs to widget
     static func saveSelectedLocale(_ identifier: String) {
+        // Always write a plain-string copy the widget can read without HMAC
+        AppGroup.userDefaults.set(identifier, forKey: selectedLocalePlainKey)
+
         do {
-            // Save to secure App Group storage
             try AppGroup.secureSet(identifier, forKey: selectedLocaleKey)
-            
-            // Immediately sync to widget - this ensures widget updates when language changes
-            WidgetUpdateManager.reloadAllWidgets()
-            
         } catch {
-            // Fallback to insecure storage if secure storage fails
-            AppGroup.userDefaults.set(identifier, forKey: selectedLocaleKey)
-            WidgetUpdateManager.reloadAllWidgets()
-            
+            // Secure write failed; plain key above is the reliable fallback
         }
+
+        WidgetUpdateManager.reloadAllWidgets()
     }
-    
+
     /// Loads the user's selected locale identifier
     static func loadSelectedLocale() -> String? {
-        do {
-            let identifier = try AppGroup.secureGet(String.self, forKey: selectedLocaleKey)
-            return identifier
-        } catch {
-            // Fallback to insecure storage for backward compatibility
-            let identifier = AppGroup.userDefaults.string(forKey: selectedLocaleKey)
+        // Try secure storage first
+        if let identifier = try? AppGroup.secureGet(String.self, forKey: selectedLocaleKey) {
             return identifier
         }
+        // Reliable plain-string fallback
+        return AppGroup.userDefaults.string(forKey: selectedLocalePlainKey)
     }
-    
+
     /// Removes the saved locale preference and syncs to widget
     static func clearSelectedLocale() {
         AppGroup.secureRemove(forKey: selectedLocaleKey)
+        AppGroup.userDefaults.removeObject(forKey: selectedLocalePlainKey)
         WidgetUpdateManager.reloadAllWidgets()
-        
     }
-    
+
     /// Removes the saved locale preference (resets to system default) - alias for compatibility
     static func resetLocalePreference() {
         clearSelectedLocale()
