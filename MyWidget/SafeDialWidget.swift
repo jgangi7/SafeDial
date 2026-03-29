@@ -14,7 +14,7 @@ struct SafeDialWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: EmergencyServiceProvider()) { entry in
             SafeDialWidgetEntryView(entry: entry)
-                .containerBackground(Color.clear, for: .widget)
+                .containerBackground(Color(.secondarySystemGroupedBackground), for: .widget)
         }
         .configurationDisplayName("Emergency Services")
         .description("Quick access to emergency service numbers for your location.")
@@ -277,7 +277,6 @@ struct MediumWidgetView: View {
             .padding(16)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
-        .background(Color(.secondarySystemGroupedBackground))
         .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
     }
 }
