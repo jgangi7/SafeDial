@@ -55,9 +55,9 @@ struct EmergencyServiceProvider: TimelineProvider {
         let locale = loadCachedLocale()
         let entry = EmergencyEntry(date: currentDate, service: service, locale: locale)
         
-        // Reload more frequently to pick up changes from the app
-        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: currentDate)!
-        let timeline = Timeline(entries: [entry], policy: .after(nextUpdate))
+        // Use .atEnd policy to allow immediate reloads when triggered by the app
+        // This ensures language changes update instantly
+        let timeline = Timeline(entries: [entry], policy: .atEnd)
         
         completion(timeline)
     }
@@ -65,9 +65,15 @@ struct EmergencyServiceProvider: TimelineProvider {
     /// Loads cached locale preference for translations
     private func loadCachedLocale() -> Locale {
         if let identifier = LocalizationPreferences.loadSelectedLocale() {
+            #if DEBUG
+            print("✅ Widget loaded locale: \(identifier)")
+            #endif
             return Locale(identifier: identifier)
         }
 
+        #if DEBUG
+        print("⚠️ Widget using system locale: \(Locale.current.identifier)")
+        #endif
         return Locale.current
     }
     
