@@ -10,11 +10,11 @@ import SwiftUI
 struct ManualCountryPickerView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var selectedService: EmergencyService?
+    @StateObject private var localizationManager = LocalizationManager.shared
     
     @State private var searchText = ""
     
     private var allServices: [EmergencyService] {
-        // Get all services from the database
         let database = EmergencyServiceDatabase.shared
         let countryCodes = [
             "US", "CA", "MX", "GB", "FR", "DE", "IT", "ES", "NL", "BE",
@@ -32,55 +32,109 @@ struct ManualCountryPickerView: View {
         if searchText.isEmpty {
             return allServices
         }
+        
         return allServices.filter { service in
-            service.countryName.localizedCaseInsensitiveContains(searchText) ||
-            service.countryCode.localizedCaseInsensitiveContains(searchText) ||
-            service.emergencyNumber.contains(searchText)
+            let matchesCountryName = service.countryName.localizedCaseInsensitiveContains(searchText)
+            let matchesCountryCode = service.countryCode.localizedCaseInsensitiveContains(searchText)
+            let matchesEmergencyNumber = service.emergencyNumber.contains(searchText)
+            return matchesCountryName || matchesCountryCode || matchesEmergencyNumber
         }
     }
     
     var body: some View {
         NavigationStack {
-            List(filteredServices, id: \.countryCode) { service in
-                Button {
-                    print("🌍 ManualCountryPickerView: User tapped \(service.countryName) (\(service.countryCode))")
-                    print("🌍 ManualCountryPickerView: Emergency number: \(service.emergencyNumber)")
-                    selectedService = service
-                    print("🌍 ManualCountryPickerView: Binding updated, dismissing...")
-                    dismiss()
-                } label: {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(service.countryName)
-                                .font(.headline)
-                            
-                            Text("Emergency: \(service.emergencyNumber)")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                        
-                        Spacer()
-                        
-                        if selectedService?.countryCode == service.countryCode {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(.blue)
-                        }
+            contentView
+                .navigationTitle(String(localized: .selectCountry))
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(Color.tcSurface, for: .navigationBar)
+                .searchable(text: $searchText, prompt: String(localized: .searchCountry))
+                .tint(Color.tcSecondary)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        cancelButton
                     }
                 }
-                .foregroundStyle(.primary)
+        }
+        .tint(Color.tcSecondary)
+        .preferredColorScheme(.light)
+    }
+
+    private var cancelButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            LocalizedText(.cancel)
+                .foregroundStyle(Color.tcSecondary)
+        }
+    }
+
+    private var contentView: some View {
+        ZStack {
+            Color.tcSurface.ignoresSafeArea()
+            serviceList
+        }
+    }
+
+    private var serviceList: some View {
+        List(filteredServices, id: \.countryCode) { service in
+            serviceButton(for: service)
+                .listRowBackground(Color.tcSurfaceContainerLowest)
+                .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+    }
+    
+    private func serviceButton(for service: EmergencyService) -> some View {
+        Button {
+            selectedService = service
+            dismiss()
+        } label: {
+            CountryRowView(
+                service: service,
+                isSelected: selectedService?.countryCode == service.countryCode
+            )
+        }
+    }
+}
+
+// MARK: - Helper Row View
+// Extracting this prevents the "compiler unable to type-check in reasonable time" error
+
+struct CountryRowView: View {
+    let service: EmergencyService
+    let isSelected: Bool
+
+    var body: some View {
+        HStack(spacing: 14) {
+            Text(service.flag)
+                .font(.system(size: 36))
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(service.countryName)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(Color.tcOnSurface)
+
+                HStack(spacing: 4) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.caption2)
+                        .foregroundStyle(Color.tcPrimary)
+
+                    Text(service.emergencyNumber)
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(Color.tcOnSurfaceVariant)
+                }
             }
-            .navigationTitle("Select Country")
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "Search countries")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        print("🌍 ManualCountryPickerView: User cancelled")
-                        dismiss()
-                    }
-                }
+
+            Spacer()
+
+            if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.title3)
+                    .foregroundStyle(Color.tcSecondary)
             }
         }
+        .padding(.vertical, 8)
     }
 }
 

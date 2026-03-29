@@ -1,322 +1,454 @@
-//
-//  ContentView.swift
-//  SafeDial
-//
-//  Created by Jimmy Gangi on 3/4/26.
-//
-
 import SwiftUI
-internal import CoreLocation
+import WidgetKit
 
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager.shared
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @State private var selectedService: EmergencyService?
     @State private var showingCountryPicker = false
+    @State private var showingLanguagePicker = false
+    
+    // Disclaimer
+    @AppStorage("hasSeenDisclaimer") private var hasSeenDisclaimer = false
+    @State private var showingDisclaimer = false
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    if let service = selectedService {
-                        VStack(spacing: 16) {
-                            // Location Status Indicator
-                            if locationManager.isLoading {
-                                HStack {
-                                    ProgressView()
-                                        .padding(.trailing, 8)
-                                    Text("Detecting your location...")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(.blue.opacity(0.1), in: RoundedRectangle(cornerRadius: 12))
-                            }
-                            
-                            // Current Location
-                            VStack(spacing: 8) {
-                                Label("Selected Country", systemImage: "mappin.circle.fill")
-                                    .font(.headline)
-                                    .foregroundStyle(.secondary)
-                                
-                                Text(service.countryName)
-                                    .font(.title2)
-                                    .bold()
-                                
-                                Text(service.countryCode)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                
-                                Button {
-                                    showingCountryPicker = true
-                                } label: {
-                                    Label("Change Country", systemImage: "globe")
-                                        .font(.subheadline)
-                                }
-                                .buttonStyle(.bordered)
-                                .padding(.top, 4)
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
-                            
-                            // Primary Emergency Number
-                            EmergencyNumberCard(
-                                title: "Emergency Services",
-                                number: service.emergencyNumber,
-                                icon: "exclamationmark.triangle.fill",
-                                color: .red,
-                                isPrimary: true
-                            )
-                            
-                            // Specific Services
-                            if let policeNumber = service.policeNumber, policeNumber != service.emergencyNumber {
-                                EmergencyNumberCard(
-                                    title: "Police",
-                                    number: policeNumber,
-                                    icon: "shield.fill",
-                                    color: .blue,
-                                    isPrimary: false
-                                )
-                            }
-                            
-                            if let ambulanceNumber = service.ambulanceNumber, ambulanceNumber != service.emergencyNumber {
-                                EmergencyNumberCard(
-                                    title: "Ambulance",
-                                    number: ambulanceNumber,
-                                    icon: "cross.fill",
-                                    color: .green,
-                                    isPrimary: false
-                                )
-                            }
-                            
-                            if let fireNumber = service.fireNumber, fireNumber != service.emergencyNumber {
-                                EmergencyNumberCard(
-                                    title: "Fire",
-                                    number: fireNumber,
-                                    icon: "flame.fill",
-                                    color: .orange,
-                                    isPrimary: false
-                                )
-                            }
+            ZStack {
+                Color.tcSurface.ignoresSafeArea()
+                ScrollView {
+                    VStack(spacing: 20) {
+                        if let service = selectedService {
+                            smartLocationCard(for: service)
+                            emergencyActionCards(for: service)
+                        } else {
+                            emptyStateView
                         }
-                    } else {
-                        VStack(spacing: 16) {
-                            Image(systemName: "globe")
-                                .font(.system(size: 60))
-                                .foregroundStyle(.secondary)
-                            
-                            Text("No country selected")
-                                .font(.headline)
-                            
-                            Text("Please select your country to view emergency service numbers.")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                                .multilineTextAlignment(.center)
-                            
-                            Button("Select Country") {
-                                showingCountryPicker = true
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
-                        .padding()
                     }
-                    
-                    // Info Section
-                    VStack(alignment: .leading, spacing: 12) {
-                        Label("How to use", systemImage: "info.circle.fill")
-                            .font(.headline)
-                        
-                        Text("Add the SafeDial widget to your Lock Screen or Home Screen for instant access to emergency numbers for your selected country.")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                        
-                        Text("Tap the widget to immediately dial emergency services.")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
-                }
-                .padding()
-            }
-            .navigationTitle("SafeDial")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingCountryPicker = true
-                    } label: {
-                        Image(systemName: "globe")
-                    }
-                }
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    Menu {
-                        Button {
-                            print("🔄 Manual location refresh requested")
-                            locationManager.updateLocation()
-                        } label: {
-                            Label("Update Location", systemImage: "location.fill")
-                        }
-                        
-                        Button {
-                            print("🔍 Debug: Testing widget data read...")
-                            if let data = UserDefaults.appGroup.data(forKey: "cachedEmergencyService"),
-                               let service = try? JSONDecoder().decode(EmergencyService.self, from: data) {
-                                print("✅ Debug: Widget CAN read: \(service.countryName) (\(service.countryCode))")
-                            } else {
-                                print("🔴 Debug: Widget CANNOT read data!")
-                            }
-                            
-                            print("🔄 Debug: Forcing widget reload...")
-                            WidgetUpdateManager.reloadAllWidgets()
-                        } label: {
-                            Label("Test Widget Sync", systemImage: "arrow.triangle.2.circlepath")
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
-                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 100)
+                    .padding(.bottom, 24)
                 }
             }
+            .ignoresSafeArea()
         }
+        .preferredColorScheme(.light)
         .onAppear {
-            print("🔵 ContentView: onAppear called")
-            loadSavedService()
-            
-            // Check authorization status and request if needed
-            print("🔵 ContentView: Checking location authorization status: \(locationManager.authorizationStatus.rawValue)")
-            switch locationManager.authorizationStatus {
-            case .notDetermined:
-                print("🔵 ContentView: Location not determined, requesting authorization...")
-                locationManager.requestAuthorization()
-            case .authorizedWhenInUse, .authorizedAlways:
-                print("🔵 ContentView: Location authorized, updating location...")
-                locationManager.updateLocation()
-            case .denied, .restricted:
-                print("🔴 ContentView: Location access denied or restricted")
-            @unknown default:
-                print("🔴 ContentView: Unknown authorization status")
+            // Check if user has seen disclaimer
+            if !hasSeenDisclaimer {
+                showingDisclaimer = true
             }
+
+            // Simply use what the manager already loaded from disk
+            self.selectedService = locationManager.currentEmergencyService
+
+            // Sync widget with current selection on every app launch
+            WidgetCenter.shared.reloadAllTimelines()
         }
-        .onChange(of: selectedService) { oldValue, newValue in
-            print("🟢 ContentView: selectedService changed from \(oldValue?.countryCode ?? "nil") to \(newValue?.countryCode ?? "nil")")
-            
-            if let service = newValue {
-                print("🟡 ContentView: Saving service for \(service.countryName) (\(service.countryCode))")
-                saveService(service)
-                print("✅ ContentView: Save completed")
-            } else {
-                print("🔴 ContentView: selectedService is nil, not saving")
-            }
+        .onChange(of: locationManager.currentEmergencyService) { _, newValue in
+            // Update view when GPS finds something new
+            if let newValue { self.selectedService = newValue }
         }
-        .onChange(of: locationManager.currentEmergencyService) { oldValue, newValue in
-            print("📍 ContentView: LocationManager emergency service changed")
-            if let service = newValue {
-                print("📍 ContentView: Location detected \(service.countryName) (\(service.countryCode))")
-                // Only auto-update if user hasn't manually selected a country yet
-                if selectedService == nil {
-                    print("📍 ContentView: Auto-selecting location-based service")
-                    selectedService = service
-                } else {
-                    print("📍 ContentView: User has manual selection, not overriding")
-                }
-            }
+        .onChange(of: selectedService) { _, newValue in
+            // Save to disk when user picks manually
+            if let newValue { locationManager.cacheEmergencyService(newValue) }
         }
         .sheet(isPresented: $showingCountryPicker) {
             ManualCountryPickerView(selectedService: $selectedService)
         }
-    }
-    
-    private func loadSavedService() {
-        print("🔵 loadSavedService: Attempting to load cached service...")
-        
-        // Try loading from UserDefaults
-        if let data = UserDefaults.appGroup.data(forKey: "cachedEmergencyService") {
-            print("🟢 loadSavedService: Found cached data, attempting to decode...")
-            
-            if let service = try? JSONDecoder().decode(EmergencyService.self, from: data) {
-                print("✅ loadSavedService: Successfully loaded \(service.countryName) (\(service.countryCode))")
-                selectedService = service
-            } else {
-                print("🔴 loadSavedService: Failed to decode cached data")
-            }
-        } else {
-            print("🟡 loadSavedService: No cached service found")
+        .sheet(isPresented: $showingLanguagePicker) {
+            LanguagePickerView()
+        }
+        .sheet(isPresented: $showingDisclaimer) {
+            DisclaimerView(hasSeenDisclaimer: $hasSeenDisclaimer, showingDisclaimer: $showingDisclaimer)
+                .interactiveDismissDisabled()
         }
     }
     
-    private func saveService(_ service: EmergencyService) {
-        print("💾 saveService: Encoding service for \(service.countryName)...")
-        
-        if let data = try? JSONEncoder().encode(service) {
-            print("💾 saveService: Successfully encoded, saving to UserDefaults...")
-            UserDefaults.appGroup.set(data, forKey: "cachedEmergencyService")
+    // MARK: - Subviews
+
+    /// Location card — Tactical Calm tonal surface, no glassmorphism
+    private func smartLocationCard(for service: EmergencyService) -> some View {
+        VStack(spacing: 16) {
+            HStack {
+                Image(systemName: "location.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(Color.tcSecondary)
+
+                LocalizedText(.location)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Color.tcOnSurfaceVariant)
+
+                Spacer()
+
+                Button {
+                    showingLanguagePicker = true
+                } label: {
+                    Image(systemName: "translate")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.tcSecondary)
+                        .padding(8)
+                        .background(Circle().fill(Color.tcSurfaceContainerHigh))
+                }
+                .accessibilityLabel(localizationManager.localize(.selectLanguage))
+            }
+
+            HStack(spacing: 16) {
+                VStack(spacing: 6) {
+                    Text(service.flag)
+                        .font(.system(size: 48))
+
+                    Text(service.smartLocationDisplay)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.tcOnSurface)
+                        .multilineTextAlignment(.center)
+                }
+
+                Spacer()
+
+                Button {
+                    showingCountryPicker = true
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                            .font(.caption)
+                        LocalizedText(.change)
+                            .font(.system(size: 14, weight: .semibold))
+                    }
+                    .foregroundStyle(Color.tcOnSurfaceVariant)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 9)
+                    .background(Capsule().fill(Color.tcSurfaceContainerHigh))
+                }
+            }
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.tcSurfaceContainer)
+                .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 8)
+        )
+    }
+    
+    /// Emergency Action Cards - Vertical stack with color-coded cards
+    @ViewBuilder
+    private func emergencyActionCards(for service: EmergencyService) -> some View {
+        VStack(spacing: 16) {
+            // Always show Emergency card
+            GlassmorphismEmergencyCard(
+                type: .emergency,
+                service: service
+            )
             
-            // Verify the save
-            if let verifyData = UserDefaults.appGroup.data(forKey: "cachedEmergencyService") {
-                print("✅ saveService: Verified data was saved (\(verifyData.count) bytes)")
-            } else {
-                print("🔴 saveService: Failed to verify saved data!")
+            // Show Police if different from emergency number
+            if let police = service.policeNumber, police != service.emergencyNumber {
+                GlassmorphismEmergencyCard(
+                    type: .police,
+                    service: service
+                )
             }
             
-            print("🔄 saveService: Reloading widget...")
-            WidgetUpdateManager.reloadEmergencyWidget()
-            print("✅ saveService: Widget reload requested")
-        } else {
-            print("🔴 saveService: Failed to encode service")
+            // Show Ambulance if different from emergency number
+            if let ambulance = service.ambulanceNumber, ambulance != service.emergencyNumber {
+                GlassmorphismEmergencyCard(
+                    type: .ambulance,
+                    service: service
+                )
+            }
+            
+            // Show Fire if different from emergency number
+            if let fire = service.fireNumber, fire != service.emergencyNumber {
+                GlassmorphismEmergencyCard(
+                    type: .fire,
+                    service: service
+                )
+            }
         }
+    }
+    
+    /// Empty state — Tactical Calm: tonal surface, red gradient CTA
+    private var emptyStateView: some View {
+        VStack(spacing: 0) {
+            // Translate / language button top-right
+            HStack {
+                Spacer()
+                Button {
+                    showingLanguagePicker = true
+                } label: {
+                    Image(systemName: "translate")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.tcOnSurfaceVariant)
+                        .padding(10)
+                        .background(Circle().fill(Color.tcSurfaceContainerHigh))
+                }
+                .accessibilityLabel(localizationManager.localize(.selectLanguage))
+            }
+            .padding(.bottom, 32)
+
+            // Globe icon with secondary blue gradient
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.tcSecondary, Color.tcSecondaryContainer],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 96, height: 96)
+                    .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 8)
+
+                Image(systemName: "globe")
+                    .font(.system(size: 44, weight: .semibold))
+                    .foregroundStyle(.white)
+            }
+            .padding(.bottom, 28)
+
+            // Headline — asymmetric left margin per editorial style
+            LocalizedText(.noCountrySelected)
+                .font(.system(size: 28, weight: .bold))
+                .foregroundStyle(Color.tcOnSurface)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 4)
+                .padding(.bottom, 12)
+
+            LocalizedText(.noCountryMessage)
+                .font(.system(size: 15, weight: .regular))
+                .foregroundStyle(Color.tcOnSurfaceVariant)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 4)
+                .padding(.bottom, 32)
+
+            // Primary CTA — red gradient, large touch target
+            Button {
+                showingCountryPicker = true
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "globe")
+                        .font(.system(size: 17, weight: .semibold))
+                    LocalizedText(.selectCountry)
+                        .font(.system(size: 17, weight: .semibold))
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: 56)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.tcPrimary, Color.tcPrimaryContainer],
+                                startPoint: UnitPoint(x: 0.15, y: 0),
+                                endPoint: UnitPoint(x: 0.85, y: 1)
+                            )
+                        )
+                        .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 12)
+                )
+            }
+            .padding(.bottom, 16)
+
+            // Privacy reassurance
+            HStack(spacing: 6) {
+                Image(systemName: "lock.fill")
+                    .font(.caption2)
+                Text(localizationManager.localize(.locationPrivacy))
+                    .font(.system(size: 12))
+            }
+            .foregroundStyle(Color.tcOutline)
+        }
+        .padding(24)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.tcSurfaceContainer)
+                .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 8)
+        )
     }
 }
 
-struct EmergencyNumberCard: View {
-    let title: String
-    let number: String
-    let icon: String
-    let color: Color
-    let isPrimary: Bool
+// MARK: - Glassmorphism Emergency Card
+
+/// A sophisticated glassmorphism card with gradient background and haptic-ready call button
+struct GlassmorphismEmergencyCard: View {
+    let type: EmergencyServiceType
+    let service: EmergencyService
+    
+    @ObservedObject private var localizationManager = LocalizationManager.shared
+    @State private var isPressed = false
+    @State private var alertMessage: String? = nil
+    @State private var showingCallConfirmation = false
+    @State private var pendingDialURL: URL? = nil
+    @State private var pendingDialNumber: String = ""
+    
+    private var localizedTitle: String {
+        switch type {
+        case .emergency:
+            return localizationManager.localize(.emergency)
+        case .police:
+            return localizationManager.localize(.police)
+        case .ambulance:
+            return localizationManager.localize(.ambulance)
+        case .fire:
+            return localizationManager.localize(.fire)
+        }
+    }
+
+    private var localizedCallAction: String {
+        switch type {
+        case .emergency: return localizationManager.localize(.callEmergency)
+        case .police:    return localizationManager.localize(.callPolice)
+        case .ambulance: return localizationManager.localize(.callAmbulance)
+        case .fire:      return localizationManager.localize(.callFire)
+        }
+    }
     
     var body: some View {
         Button {
-            if let url = URL(string: "tel://\(number)") {
+            prepareCall()
+        } label: {
+            HStack(spacing: 20) {
+                // Left: icon, label, phone number
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 10) {
+                        Image(systemName: type.icon)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(.white)
+
+                        Text(localizedTitle)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(.white)
+                    }
+
+                    if let number = type.number(from: service) {
+                        Text(number)
+                            .font(.system(size: 40, weight: .bold))
+                            .foregroundStyle(.white)
+                            .tracking(-0.5)
+                    }
+                }
+
+                Spacer()
+
+                callButton
+            }
+            .padding(24)
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(type.gradient)
+                    .shadow(color: Color.tcOnSurface.opacity(0.06), radius: 24, x: 0, y: 12)
+            )
+            .scaleEffect(isPressed ? 0.97 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: isPressed)
+        }
+        .buttonStyle(PlainButtonStyle())
+        .confirmationDialog(
+            "\(localizedTitle) · \(service.countryName)",
+            isPresented: $showingCallConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("📞  \(pendingDialNumber)") {
+                guard let url = pendingDialURL else { return }
+                let notification = UINotificationFeedbackGenerator()
+                notification.notificationOccurred(.warning)
                 UIApplication.shared.open(url)
             }
-        } label: {
-            HStack {
-                Image(systemName: icon)
-                    .font(.title2)
-                    .foregroundStyle(color)
-                    .frame(width: 44, height: 44)
-                    .background(color.opacity(0.2), in: Circle())
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
-                        .font(isPrimary ? .headline : .subheadline)
-                        .foregroundStyle(.primary)
-                    
-                    Text(number)
-                        .font(isPrimary ? .title : .title3)
-                        .bold()
-                        .foregroundStyle(color)
+            Button(localizationManager.localize(.cancel), role: .cancel) {}
+        }
+        .alert(localizationManager.localize(.securityAlert), isPresented: Binding(
+            get: { alertMessage != nil },
+            set: { if !$0 { alertMessage = nil } }
+        )) {
+            Button(localizationManager.localize(.done), role: .cancel) { alertMessage = nil }
+        } message: {
+            Text(alertMessage ?? "")
+        }
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    if !isPressed {
+                        isPressed = true
+                        // Haptic feedback
+                        let impact = UIImpactFeedbackGenerator(style: .medium)
+                        impact.impactOccurred()
+                    }
                 }
-                
-                Spacer()
-                
-                Image(systemName: "phone.fill")
-                    .foregroundStyle(color)
-            }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(isPrimary ? color.opacity(0.1) : Color(.systemBackground), in: RoundedRectangle(cornerRadius: 16))
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .strokeBorder(color.opacity(isPrimary ? 0.3 : 0.2), lineWidth: isPrimary ? 2 : 1)
-            )
+                .onEnded { _ in
+                    isPressed = false
+                }
+        )
+    }
+    
+    /// Circular call button — white well, service-colored icon
+    private var callButton: some View {
+        ZStack {
+            Circle()
+                .fill(Color.tcSurfaceContainerLowest)
+                .frame(width: 60, height: 60)
+                .shadow(color: Color.tcOnSurface.opacity(0.1), radius: 8, x: 0, y: 4)
+
+            Image(systemName: "phone.fill")
+                .font(.system(size: 22, weight: .bold))
+                .foregroundStyle(type.solidColor)
         }
     }
-}
+    
+    /// Validates the number and shows a confirmation alert with the exact digits before dialing.
+    /// iOS's phone confirmation dialog may reformat short numbers (e.g. "190" → "1 (90)"),
+    /// so we show our own alert first so the user always sees the correct number.
+    /// OWASP MASVS: PLATFORM-1, CODE-1, RESILIENCE-2
+    private func prepareCall() {
+        guard let number = type.number(from: service) else { return }
 
-#Preview {
-    ContentView()
+        let manager = LocalizationManager.shared
+
+        // OWASP MASVS: CODE-1 - Sanitize phone number
+        let sanitizedNumber = EmergencyService.sanitizePhoneNumber(number)
+
+        // OWASP MASVS: PLATFORM-1 - Validate phone number format
+        guard EmergencyService.isValidPhoneNumber(sanitizedNumber) else {
+            showSecurityAlert(message: manager.localize(.invalidPhoneNumber))
+            return
+        }
+
+        // OWASP MASVS: RESILIENCE-2 - Cross-validate with database
+        guard validateNumberAgainstDatabase(number: sanitizedNumber) else {
+            showSecurityAlert(message: manager.localize(.validationFailed))
+            return
+        }
+
+        // OWASP MASVS: PLATFORM-1 - Validate URL construction
+        // Use "tel:" (not "tel://") for proper emergency number dialing
+        // Emergency numbers are local-only — do not prepend international dialing code
+        guard let url = URL(string: "tel:\(sanitizedNumber)"),
+              UIApplication.shared.canOpenURL(url) else {
+            showSecurityAlert(message: manager.localize(.unableToMakeCall))
+            return
+        }
+
+        // All checks passed — show our confirmation so the user sees the correct number
+        // before iOS's phone dialog (which may misformat short numbers like "190" as "1 (90)")
+        pendingDialNumber = sanitizedNumber
+        pendingDialURL = url
+        showingCallConfirmation = true
+    }
+    
+    /// Cross-validates phone number against emergency service database
+    /// OWASP MASVS: RESILIENCE-2
+    private func validateNumberAgainstDatabase(number: String) -> Bool {
+        let validNumbers = [
+            service.emergencyNumber,
+            service.policeNumber,
+            service.ambulanceNumber,
+            service.fireNumber
+        ].compactMap { $0 }
+        
+        return validNumbers.contains(number)
+    }
+    
+    /// Shows security alert to user
+    private func showSecurityAlert(message: String) {
+        let notification = UINotificationFeedbackGenerator()
+        notification.notificationOccurred(.error)
+        alertMessage = message
+    }
 }
