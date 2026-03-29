@@ -9,7 +9,7 @@ import Foundation
 import CryptoKit
 
 enum AppGroup {
-    static let identifier = "group.com.jimmygangi.emergencyroute"
+    static let identifier = "group.com.jamesgangi.safedial"
     
     static var userDefaults: UserDefaults {
         // Try to load the App Group UserDefaults
