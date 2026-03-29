@@ -7,6 +7,10 @@ struct ContentView: View {
     @State private var showingCountryPicker = false
     @State private var showingLanguagePicker = false
     
+    // Disclaimer
+    @AppStorage("hasSeenDisclaimer") private var hasSeenDisclaimer = false
+    @State private var showingDisclaimer = false
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -29,6 +33,11 @@ struct ContentView: View {
         }
         .preferredColorScheme(.light)
         .onAppear {
+            // Check if user has seen disclaimer
+            if !hasSeenDisclaimer {
+                showingDisclaimer = true
+            }
+            
             // Simply use what the manager already loaded from disk
             self.selectedService = locationManager.currentEmergencyService
         }
@@ -45,6 +54,10 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showingLanguagePicker) {
             LanguagePickerView()
+        }
+        .sheet(isPresented: $showingDisclaimer) {
+            DisclaimerView(hasSeenDisclaimer: $hasSeenDisclaimer, showingDisclaimer: $showingDisclaimer)
+                .interactiveDismissDisabled()
         }
     }
     

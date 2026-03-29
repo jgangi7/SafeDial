@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F22637C2F79646F00AE82DF /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F22637B2F79646F00AE82DF /* DisclaimerView.swift */; };
+		3F22637D2F79646F00AE82DF /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F22637B2F79646F00AE82DF /* DisclaimerView.swift */; };
+		3F22637F2F79649500AE82DF /* DISCLAIMER_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F22637E2F79649500AE82DF /* DISCLAIMER_IMPLEMENTATION.md */; };
+		3F2263802F79649500AE82DF /* DISCLAIMER_IMPLEMENTATION.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F22637E2F79649500AE82DF /* DISCLAIMER_IMPLEMENTATION.md */; };
+		3F2263822F7965B500AE82DF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3F2263812F7965B500AE82DF /* PrivacyInfo.xcprivacy */; };
+		3F2263832F7965B500AE82DF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3F2263812F7965B500AE82DF /* PrivacyInfo.xcprivacy */; };
+		3F2263852F7965BD00AE82DF /* WidgetExtensionPrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3F2263842F7965BD00AE82DF /* WidgetExtensionPrivacyInfo.xcprivacy */; };
+		3F2263862F7965BD00AE82DF /* WidgetExtensionPrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3F2263842F7965BD00AE82DF /* WidgetExtensionPrivacyInfo.xcprivacy */; };
+		3F22638F2F79663900AE82DF /* PRIVACY_CHECKLIST.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F22638E2F79663900AE82DF /* PRIVACY_CHECKLIST.md */; };
+		3F2263902F79663900AE82DF /* PRIVACY_CHECKLIST.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F22638E2F79663900AE82DF /* PRIVACY_CHECKLIST.md */; };
 		3F65A6CC2F5937EE0000CE3A /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F65A6CB2F5937EE0000CE3A /* ColorScheme.swift */; };
 		3F65A6CD2F5938BE0000CE3A /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F65A6CB2F5937EE0000CE3A /* ColorScheme.swift */; };
 		3FF6D8E72F58ADC8002B95D6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FF6D8E62F58ADC8002B95D6 /* WidgetKit.framework */; };
@@ -67,6 +77,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3F22637B2F79646F00AE82DF /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
+		3F22637E2F79649500AE82DF /* DISCLAIMER_IMPLEMENTATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DISCLAIMER_IMPLEMENTATION.md; sourceTree = "<group>"; };
+		3F2263812F7965B500AE82DF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3F2263842F7965BD00AE82DF /* WidgetExtensionPrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = WidgetExtensionPrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3F22638E2F79663900AE82DF /* PRIVACY_CHECKLIST.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PRIVACY_CHECKLIST.md; sourceTree = "<group>"; };
 		3F65A6CA2F58EBB20000CE3A /* MyWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyWidgetExtension.entitlements; sourceTree = "<group>"; };
 		3F65A6CB2F5937EE0000CE3A /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		3FF6D8B62F58AD71002B95D6 /* SafeDial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeDial.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,52 +127,31 @@
 		3F57BABD2F58D48A00C79A9D /* Exceptions for "SafeDial" folder in "SafeDial" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
 				Assets/android/play_store_512.png,
 				"Assets/android/res/mipmap-anydpi-v26/ic_launcher.xml",
-				"Assets/android/res/mipmap-hdpi/ic_launcher.png",
 				"Assets/android/res/mipmap-hdpi/ic_launcher_background.png",
 				"Assets/android/res/mipmap-hdpi/ic_launcher_foreground.png",
 				"Assets/android/res/mipmap-hdpi/ic_launcher_monochrome.png",
-				"Assets/android/res/mipmap-mdpi/ic_launcher.png",
+				"Assets/android/res/mipmap-hdpi/ic_launcher.png",
 				"Assets/android/res/mipmap-mdpi/ic_launcher_background.png",
 				"Assets/android/res/mipmap-mdpi/ic_launcher_foreground.png",
 				"Assets/android/res/mipmap-mdpi/ic_launcher_monochrome.png",
-				"Assets/android/res/mipmap-xhdpi/ic_launcher.png",
+				"Assets/android/res/mipmap-mdpi/ic_launcher.png",
 				"Assets/android/res/mipmap-xhdpi/ic_launcher_background.png",
 				"Assets/android/res/mipmap-xhdpi/ic_launcher_foreground.png",
 				"Assets/android/res/mipmap-xhdpi/ic_launcher_monochrome.png",
-				"Assets/android/res/mipmap-xxhdpi/ic_launcher.png",
+				"Assets/android/res/mipmap-xhdpi/ic_launcher.png",
 				"Assets/android/res/mipmap-xxhdpi/ic_launcher_background.png",
 				"Assets/android/res/mipmap-xxhdpi/ic_launcher_foreground.png",
 				"Assets/android/res/mipmap-xxhdpi/ic_launcher_monochrome.png",
-				"Assets/android/res/mipmap-xxxhdpi/ic_launcher.png",
+				"Assets/android/res/mipmap-xxhdpi/ic_launcher.png",
 				"Assets/android/res/mipmap-xxxhdpi/ic_launcher_background.png",
 				"Assets/android/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
 				"Assets/android/res/mipmap-xxxhdpi/ic_launcher_monochrome.png",
+				"Assets/android/res/mipmap-xxxhdpi/ic_launcher.png",
+				Info.plist,
 			);
 			target = 3FF6D8B52F58AD71002B95D6 /* SafeDial */;
-		};
-		3FEC668E2F6DC98A00F1F743 /* Exceptions for "SafeDial" folder in "MyWidgetExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				PrivacyInfo.xcprivacy,
-			);
-			target = 3FF6D8E32F58ADC8002B95D6 /* MyWidgetExtension */;
-		};
-		3FEC66942F6DCB3500F1F743 /* Exceptions for "SafeDial" folder in "SafeDialTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				PrivacyInfo.xcprivacy,
-			);
-			target = 3FF6D8C22F58AD73002B95D6 /* SafeDialTests */;
-		};
-		3FEC66952F6DCB3500F1F743 /* Exceptions for "SafeDial" folder in "SafeDialUITests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				PrivacyInfo.xcprivacy,
-			);
-			target = 3FF6D8CC2F58AD73002B95D6 /* SafeDialUITests */;
 		};
 		3FF6D8F92F58ADCA002B95D6 /* Exceptions for "MyWidget" folder in "MyWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -173,9 +167,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				3F57BABD2F58D48A00C79A9D /* Exceptions for "SafeDial" folder in "SafeDial" target */,
-				3FEC66942F6DCB3500F1F743 /* Exceptions for "SafeDial" folder in "SafeDialTests" target */,
-				3FEC66952F6DCB3500F1F743 /* Exceptions for "SafeDial" folder in "SafeDialUITests" target */,
-				3FEC668E2F6DC98A00F1F743 /* Exceptions for "SafeDial" folder in "MyWidgetExtension" target */,
 			);
 			path = SafeDial;
 			sourceTree = "<group>";
@@ -255,6 +246,11 @@
 				3FFB8EEB2F59BA39008BD299 /* LocalizationUsageGuide.swift */,
 				3FFB8EF42F59BB73008BD299 /* LocalizedText.swift */,
 				3FFB8F602F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md */,
+				3F22637B2F79646F00AE82DF /* DisclaimerView.swift */,
+				3F22637E2F79649500AE82DF /* DISCLAIMER_IMPLEMENTATION.md */,
+				3F2263812F7965B500AE82DF /* PrivacyInfo.xcprivacy */,
+				3F2263842F7965BD00AE82DF /* WidgetExtensionPrivacyInfo.xcprivacy */,
+				3F22638E2F79663900AE82DF /* PRIVACY_CHECKLIST.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -427,6 +423,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FFB8F612F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md in Resources */,
+				3F2263822F7965B500AE82DF /* PrivacyInfo.xcprivacy in Resources */,
+				3F22638F2F79663900AE82DF /* PRIVACY_CHECKLIST.md in Resources */,
+				3F2263802F79649500AE82DF /* DISCLAIMER_IMPLEMENTATION.md in Resources */,
+				3F2263852F7965BD00AE82DF /* WidgetExtensionPrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +448,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F2263832F7965B500AE82DF /* PrivacyInfo.xcprivacy in Resources */,
+				3F2263862F7965BD00AE82DF /* WidgetExtensionPrivacyInfo.xcprivacy in Resources */,
+				3F2263902F79663900AE82DF /* PRIVACY_CHECKLIST.md in Resources */,
+				3F22637F2F79649500AE82DF /* DISCLAIMER_IMPLEMENTATION.md in Resources */,
 				3FFB8F622F59D9A8008BD299 /* WIDGET_LOCALIZATION_CHANGES.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,6 +465,7 @@
 			files = (
 				3FFB8EE12F59B96A008BD299 /* LocalizationManager.swift in Sources */,
 				3FFB8EE92F59B9CC008BD299 /* LanguagePickerView.swift in Sources */,
+				3F22637C2F79646F00AE82DF /* DisclaimerView.swift in Sources */,
 				3FFB8EED2F59BA39008BD299 /* LocalizationUsageGuide.swift in Sources */,
 				3FFB8EE32F59B96F008BD299 /* LocalizationPreferences.swift in Sources */,
 				3FFB8EF52F59BB73008BD299 /* LocalizedText.swift in Sources */,
@@ -493,6 +498,7 @@
 				3FFB8EE02F59B96A008BD299 /* LocalizationManager.swift in Sources */,
 				3FFB8EEA2F59B9CC008BD299 /* LanguagePickerView.swift in Sources */,
 				3FFB8EE42F59B96F008BD299 /* LocalizationPreferences.swift in Sources */,
+				3F22637D2F79646F00AE82DF /* DisclaimerView.swift in Sources */,
 				3FFB8EE72F59B9B2008BD299 /* LocalizedStrings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
