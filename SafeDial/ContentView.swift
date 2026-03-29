@@ -1,4 +1,5 @@
 import SwiftUI
+import WidgetKit
 
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager.shared
@@ -37,9 +38,12 @@ struct ContentView: View {
             if !hasSeenDisclaimer {
                 showingDisclaimer = true
             }
-            
+
             // Simply use what the manager already loaded from disk
             self.selectedService = locationManager.currentEmergencyService
+
+            // Sync widget with current selection on every app launch
+            WidgetCenter.shared.reloadAllTimelines()
         }
         .onChange(of: locationManager.currentEmergencyService) { _, newValue in
             // Update view when GPS finds something new

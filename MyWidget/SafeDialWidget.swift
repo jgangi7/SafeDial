@@ -246,8 +246,7 @@ struct MediumWidgetView: View {
             }
             .padding(16)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .background(Color(.secondarySystemGroupedBackground))
-            
+
             // Right section - Emergency Numbers
             VStack(alignment: .leading, spacing: 8) {
                 WidgetNumberRow(
@@ -278,6 +277,7 @@ struct MediumWidgetView: View {
             .padding(16)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
+        .background(Color(.secondarySystemGroupedBackground))
         .widgetURL(WidgetURLBuilder.buildURL(for: entry.service))
     }
 }
